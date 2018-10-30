@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".screens.login.LoginScreen">
+        <activity
+            android:name=".screens.login.LoginScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +30,22 @@
             android:name="io.fabric.ApiKey"
             android:value="4c160ce800623141f9d48fb1a90f61e5181639d8" />
 
-        <activity android:name=".screens.home.HomeScreen"></activity>
+        <activity
+            android:name=".screens.home.HomeScreen"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".services.PushNotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_baby_mono" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
     </application>
 
 </manifest>

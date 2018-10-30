@@ -3,13 +3,14 @@ package com.developerdru.vividity.data.entities;
 public class User {
 
     private String userId;
-    private boolean uploadPermission;
+    private boolean uploadPermission = true;
     private String profilePicURL;
     private String profilePicName;
     private String signInService; // google or twitter
     private String signInServiceIdentifier;
     private String signInServiceDisplayName;
     private String displayName;
+    private String fcmToken;
 
     public String getUserId() {
         return userId;
@@ -73,5 +74,13 @@ public class User {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

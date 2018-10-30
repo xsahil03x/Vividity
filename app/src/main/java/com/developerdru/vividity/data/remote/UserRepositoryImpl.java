@@ -1,79 +1,44 @@
 package com.developerdru.vividity.data.remote;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.developerdru.vividity.data.DataSource;
+import com.developerdru.vividity.data.UserRepository;
 import com.developerdru.vividity.data.entities.FollowUser;
-import com.developerdru.vividity.data.entities.OperationStatus;
-import com.developerdru.vividity.data.entities.Photo;
-import com.developerdru.vividity.data.entities.PhotoComment;
 import com.developerdru.vividity.data.entities.User;
 import com.developerdru.vividity.utils.FirebasePaths;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class FirebaseDataSource implements DataSource.Photo, DataSource.User, DataSource.Storage {
+public class UserRepositoryImpl implements UserRepository {
 
-    private static final String TAG = "DataSource";
+    private static final String TAG = "UserRepositoryImpl";
 
-    private static FirebaseDataSource INSTANCE;
+    private static UserRepositoryImpl INSTANCE;
 
-    public synchronized static FirebaseDataSource getInstance() {
+    public synchronized static UserRepositoryImpl getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new FirebaseDataSource();
+            INSTANCE = new UserRepositoryImpl();
         }
         return INSTANCE;
     }
 
-    private DatabaseReference photosRef;
-    private DatabaseReference commentsRef;
     private DatabaseReference usersRef;
 
-    private StorageReference storageRef;
 
-
-    private FirebaseDataSource() {
+    private UserRepositoryImpl() {
         DatabaseReference baseRef = FirebaseDatabase.getInstance().getReference();
-        photosRef = baseRef.child(FirebasePaths.PHOTOS_DB_PATH);
-        commentsRef = baseRef.child(FirebasePaths.COMMENTS_DB_PATH);
         usersRef = baseRef.child(FirebasePaths.USERS_DB_PATH);
-        storageRef = FirebaseStorage.getInstance().getReference();
-    }
-
-    @Override
-    public LiveData<Photo> getPhotos() {
-        FirebaseQueryLiveData photosData = new FirebaseQueryLiveData(photosRef);
-        return Transformations.map(photosData, input -> input.getValue(Photo.class));
-    }
-
-    @Override
-    public LiveData<List<PhotoComment>> getCommentsForPhoto(String photoId) {
-        FirebaseQueryLiveData commentsData = new FirebaseQueryLiveData(commentsRef.child(photoId));
-        return Transformations.map(commentsData, new Function<DataSnapshot, List<PhotoComment>>() {
-            @Override
-            public List<PhotoComment> apply(DataSnapshot input) {
-                return new ArrayList<>(((Map<String, PhotoComment>) input.getValue())
-                        .values());
-            }
-        });
     }
 
     @Override
@@ -214,71 +179,5 @@ public class FirebaseDataSource implements DataSource.Photo, DataSource.User, Da
             profilePicName, @Nullable String profilePicUrl) {
         // TODO not yet implemented and will probably not be implemented
         return null;
-    }
-
-    @Override
-    public LiveData<OperationStatus> uploadProfilePic(Uri localProfilePicUri) {
-        // TODO not yet implemented and will probably not be implemented
-        return null;
-    }
-
-    @Override
-    public LiveData<OperationStatus> uploadPhoto(@NonNull Uri localPhotoUri, @NonNull String
-            fileName) {
-
-        StorageReference newRef = storageRef.child(FirebasePaths.STORAGE_PHOTOS_PATH).child
-                (fileName);
-
-        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
-
-        newRef.putFile(localPhotoUri)
-                .addOnProgressListener(snapshot -> {
-                    int progressPct = (int) ((100 * snapshot.getBytesTransferred()) / snapshot
-                            .getTotalByteCount());
-                    status.postValue(OperationStatus.getInProgresStatus(progressPct));
-                })
-                .continueWithTask(task -> {
-                    if (!task.isSuccessful()) {
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return newRef.getDownloadUrl();
-                })
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        status.postValue(OperationStatus.getCompletedStatus(task.getResult()
-                                .toString()));
-                    } else {
-                        status.postValue(
-                                OperationStatus.getErrorStatus(task.getException() == null
-                                        ? "ERROR"
-                                        : task.getException().toString()));
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    status.postValue(OperationStatus.getErrorStatus(e.getMessage()));
-                    e.printStackTrace();
-                });
-        return status;
-    }
-
-    @Override
-    public LiveData<OperationStatus> downloadPhoto(@NonNull String storagePath, @NonNull Uri
-            destinationUri) {
-        StorageReference newRef = FirebaseStorage.getInstance().getReference(storagePath);
-        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
-
-        newRef.getFile(destinationUri)
-                .addOnProgressListener(snapshot -> {
-                    int progressPct = (int) ((100 * snapshot.getBytesTransferred()) / snapshot
-                            .getTotalByteCount());
-                    status.postValue(OperationStatus.getInProgresStatus(progressPct));
-                })
-                .addOnFailureListener(e -> {
-                    status.postValue(OperationStatus.getErrorStatus(e.getMessage()));
-                    e.printStackTrace();
-                })
-                .addOnSuccessListener(snapshot -> status.postValue(OperationStatus
-                        .getCompletedStatus(destinationUri.toString())));
-        return status;
     }
 }

@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.developerdru.vividity.data.entities.FollowUser;
-import com.developerdru.vividity.data.entities.OperationStatus;
+import com.developerdru.vividity.data.remote.OperationStatus;
 import com.developerdru.vividity.data.entities.PhotoComment;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public interface DataSource {
         LiveData<OperationStatus> uploadPhoto(@NonNull Uri localPhotoUri, @NonNull String fileName);
 
         LiveData<OperationStatus> downloadPhoto(@NonNull String storagePath, @NonNull Uri
-                destinationUri);
+                localPhotoUri);
     }
 
 }

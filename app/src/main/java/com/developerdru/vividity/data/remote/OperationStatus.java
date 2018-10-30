@@ -1,4 +1,4 @@
-package com.developerdru.vividity.data.entities;
+package com.developerdru.vividity.data.remote;
 
 public class OperationStatus {
 
