@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "318144270695",
+    "firebase_url": "https://vividity-963.firebaseio.com",
+    "project_id": "vividity-963",
+    "storage_bucket": "vividity-963.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318144270695:android:c5c751870b6131f9",
+        "android_client_info": {
+          "package_name": "com.developerdru.vividity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318144270695-2ne8fas2br5stcrp5epoulenm11br5o4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.developerdru.vividity",
+            "certificate_hash": "96897c3a1de126d2c916560b4ec0412bbf557927"
+          }
+        },
+        {
+          "client_id": "318144270695-v1tfl0k2bg5c16etk9k2uqa89lonsfdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuNXDi3oM0Iho-o-cZjhiHZj3t5B2R3uo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318144270695-v1tfl0k2bg5c16etk9k2uqa89lonsfdh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
