@@ -2,6 +2,7 @@ package com.developerdru.vividity.data.remote;
 
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.util.Log;
 
 import com.developerdru.vividity.data.DataSource;
 import com.developerdru.vividity.data.entities.FollowUser;
+import com.developerdru.vividity.data.entities.OperationStatus;
 import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.data.entities.PhotoComment;
 import com.developerdru.vividity.data.entities.User;
@@ -41,7 +43,6 @@ public class FirebaseDataSource implements DataSource.Photo, DataSource.User, Da
         return INSTANCE;
     }
 
-    private DatabaseReference baseRef;
     private DatabaseReference photosRef;
     private DatabaseReference commentsRef;
     private DatabaseReference usersRef;
@@ -50,7 +51,7 @@ public class FirebaseDataSource implements DataSource.Photo, DataSource.User, Da
 
 
     private FirebaseDataSource() {
-        baseRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference baseRef = FirebaseDatabase.getInstance().getReference();
         photosRef = baseRef.child(FirebasePaths.PHOTOS_DB_PATH);
         commentsRef = baseRef.child(FirebasePaths.COMMENTS_DB_PATH);
         usersRef = baseRef.child(FirebasePaths.USERS_DB_PATH);
@@ -96,10 +97,12 @@ public class FirebaseDataSource implements DataSource.Photo, DataSource.User, Da
     }
 
     @Override
-    public void followUser(@NonNull String userId, @NonNull String userName, @NonNull String
-            profilePic, @NonNull DataSource.User.Listener listener) {
+    public LiveData<OperationStatus> followUser(@NonNull String userId, @NonNull String userName,
+                                                @NonNull String profilePic) {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
 
         if (currentUser != null) {
             String myId = currentUser.getUid();
@@ -131,20 +134,26 @@ public class FirebaseDataSource implements DataSource.Photo, DataSource.User, Da
                                 .child(myId)
                                 .setValue(currentUserInfo);
                     })
-                    .addOnSuccessListener(av -> listener.onComplete())
+                    .addOnSuccessListener(av -> status.postValue(OperationStatus
+                            .getCompletedStatus()))
                     .addOnFailureListener(ex -> {
-                        listener.onError();
+                        status.postValue(OperationStatus.getErrorStatus(ex.getMessage()));
                         ex.printStackTrace();
                     });
         } else {
-            listener.onError();
+            status.postValue(OperationStatus.getErrorStatus("current user is null"));
             Log.e(TAG, "followUser: current user is null");
         }
+        return status;
     }
 
     @Override
-    public void unFollowUser(@NonNull String userId, @NonNull DataSource.User.Listener listener) {
+    public LiveData<OperationStatus> unFollowUser(@NonNull String userId) {
+
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
+
         if (currentUser != null) {
             String currentUserId = currentUser.getUid();
             // Remove from my followed list
@@ -157,70 +166,76 @@ public class FirebaseDataSource implements DataSource.Photo, DataSource.User, Da
                                     .child(currentUserId)
                                     .removeValue((dbError2, dbRef2) -> {
                                         if (dbError2 == null) {
-                                            listener.onComplete();
+                                            status.postValue(OperationStatus.getCompletedStatus());
                                         } else {
-                                            listener.onError();
+                                            status.postValue(OperationStatus.getErrorStatus
+                                                    (dbError2.getDetails()));
                                             Log.e(TAG, "unFollowUser2: " + dbError2.getDetails());
                                         }
                                     });
 
                         } else {
-                            listener.onError();
+                            status.postValue(OperationStatus.getErrorStatus(dbError.getDetails()));
                             Log.e(TAG, "unFollowUser: " + dbError.getDetails());
                         }
                     });
         } else {
-            listener.onError();
+            status.postValue(OperationStatus.getErrorStatus("current user is null"));
             Log.e(TAG, "unFollowUser: current user is null");
         }
+        return status;
     }
 
     @Override
-    public void updateNotificationSetting(@NonNull String userId, boolean follow, @NonNull
-            DataSource.User.Listener listener) {
+    public LiveData<OperationStatus> updateNotificationSetting(@NonNull String userId, boolean
+            follow) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
         if (currentUser != null) {
             usersRef.child(currentUser.getUid())
                     .child(FirebasePaths.USER_FOllOWS_PATH)
                     .child(userId)
                     .child(FirebasePaths.USER_NOTIFICATION_PATH)
                     .setValue(follow)
-                    .addOnSuccessListener(a -> listener.onComplete())
+                    .addOnSuccessListener(a -> status.postValue(OperationStatus
+                            .getCompletedStatus()))
                     .addOnFailureListener(ex -> {
-                        listener.onError();
+                        status.postValue(OperationStatus.getErrorStatus(ex.getMessage()));
                         ex.printStackTrace();
                     });
         } else {
-            listener.onError();
+            status.postValue(OperationStatus.getErrorStatus("current user is null"));
         }
+        return status;
     }
 
     @Override
-    public void updateMyInfo(@Nullable String displayName, @Nullable String profilePicName,
-                             @Nullable String profilePicUrl, @NonNull DataSource.User.Listener
-                                     listener) {
+    public LiveData<OperationStatus> updateMyInfo(@Nullable String displayName, @Nullable String
+            profilePicName, @Nullable String profilePicUrl) {
         // TODO not yet implemented and will probably not be implemented
-
+        return null;
     }
 
     @Override
-    public void uploadProfilePic(Uri localProfilePicUri, DataSource.Storage.Listener listener) {
+    public LiveData<OperationStatus> uploadProfilePic(Uri localProfilePicUri) {
         // TODO not yet implemented and will probably not be implemented
+        return null;
     }
 
     @Override
-    public void uploadPhoto(@NonNull Uri localPhotoUri, @NonNull String fileName, @NonNull DataSource
-            .Storage.Listener listener) {
+    public LiveData<OperationStatus> uploadPhoto(@NonNull Uri localPhotoUri, @NonNull String
+            fileName) {
 
         StorageReference newRef = storageRef.child(FirebasePaths.STORAGE_PHOTOS_PATH).child
                 (fileName);
 
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
+
         newRef.putFile(localPhotoUri)
-                .addOnProgressListener(snapshot -> listener.onProgressUpdate(snapshot
-                        .getTotalByteCount(), snapshot.getBytesTransferred()))
-                .addOnFailureListener(e -> {
-                    listener.onError(e.getMessage());
-                    e.printStackTrace();
+                .addOnProgressListener(snapshot -> {
+                    int progressPct = (int) ((100 * snapshot.getBytesTransferred()) / snapshot
+                            .getTotalByteCount());
+                    status.postValue(OperationStatus.getInProgresStatus(progressPct));
                 })
                 .continueWithTask(task -> {
                     if (!task.isSuccessful()) {
@@ -230,15 +245,40 @@ public class FirebaseDataSource implements DataSource.Photo, DataSource.User, Da
                 })
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        listener.onComplete(task.getResult().toString(), fileName);
+                        status.postValue(OperationStatus.getCompletedStatus(task.getResult()
+                                .toString()));
                     } else {
-                        listener.onError(task.getException() == null ? "ERROR" : task.getException()
-                                .toString());
+                        status.postValue(
+                                OperationStatus.getErrorStatus(task.getException() == null
+                                        ? "ERROR"
+                                        : task.getException().toString()));
                     }
                 })
                 .addOnFailureListener(e -> {
-                    listener.onError(e.getMessage());
+                    status.postValue(OperationStatus.getErrorStatus(e.getMessage()));
                     e.printStackTrace();
                 });
+        return status;
+    }
+
+    @Override
+    public LiveData<OperationStatus> downloadPhoto(@NonNull String storagePath, @NonNull Uri
+            destinationUri) {
+        StorageReference newRef = FirebaseStorage.getInstance().getReference(storagePath);
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
+
+        newRef.getFile(destinationUri)
+                .addOnProgressListener(snapshot -> {
+                    int progressPct = (int) ((100 * snapshot.getBytesTransferred()) / snapshot
+                            .getTotalByteCount());
+                    status.postValue(OperationStatus.getInProgresStatus(progressPct));
+                })
+                .addOnFailureListener(e -> {
+                    status.postValue(OperationStatus.getErrorStatus(e.getMessage()));
+                    e.printStackTrace();
+                })
+                .addOnSuccessListener(snapshot -> status.postValue(OperationStatus
+                        .getCompletedStatus(destinationUri.toString())));
+        return status;
     }
 }

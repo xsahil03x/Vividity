@@ -1,20 +1,19 @@
-package com.developerdru.vividity;
+package com.developerdru.vividity.screens.login;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+import com.developerdru.vividity.R;
+import com.developerdru.vividity.screens.home.HomeScreen;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import io.fabric.sdk.android.Fabric;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,11 +24,19 @@ public class LoginScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login_screen);
+
+        // Check if the user has already logged in
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Intent homeScreenIntent = new Intent(this, HomeScreen.class);
+            startActivity(homeScreenIntent);
+            finish();
+        } else {
+            launchLogin();
+        }
     }
 
-    public void launchLogin(View view) {
+    public void launchLogin() {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build(),

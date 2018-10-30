@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.developerdru.vividity.data.entities.FollowUser;
+import com.developerdru.vividity.data.entities.OperationStatus;
 import com.developerdru.vividity.data.entities.PhotoComment;
 
 import java.util.List;
@@ -28,37 +29,24 @@ public interface DataSource {
 
         LiveData<FollowUser> getFollowsList(String userId);
 
-        void followUser(@NonNull String userId, @NonNull String userName, @NonNull String
-                profilePic, @NonNull Listener listener);
+        LiveData<OperationStatus> followUser(@NonNull String userId, @NonNull String userName,
+                                             @NonNull String profilePic);
 
-        void unFollowUser(@NonNull String userId, @NonNull Listener listener);
+        LiveData<OperationStatus> unFollowUser(@NonNull String userId);
 
-        void updateNotificationSetting(@NonNull String userId, boolean follow, @NonNull Listener
-                listener);
+        LiveData<OperationStatus> updateNotificationSetting(@NonNull String userId, boolean follow);
 
-        void updateMyInfo(@Nullable String displayName, @Nullable String profilePicName,
-                          @Nullable String profilePicUrl, @NonNull Listener listener);
-
-        interface Listener {
-            void onComplete();
-
-            void onError();
-        }
+        LiveData<OperationStatus> updateMyInfo(@Nullable String displayName, @Nullable String
+                profilePicName, @Nullable String profilePicUrl);
     }
 
     interface Storage {
-        void uploadProfilePic(Uri localProfilePicUri, Listener listener);
+        LiveData<OperationStatus> uploadProfilePic(Uri localProfilePicUri);
 
-        void uploadPhoto(@NonNull Uri localPhotoUri, @NonNull String fileName, @NonNull Listener
-                listener);
+        LiveData<OperationStatus> uploadPhoto(@NonNull Uri localPhotoUri, @NonNull String fileName);
 
-        interface Listener {
-            void onComplete(String downloadURL, String name);
-
-            void onError(String errorMessage);
-
-            void onProgressUpdate(long uploadedByteCount, long maxSizeCount);
-        }
+        LiveData<OperationStatus> downloadPhoto(@NonNull String storagePath, @NonNull Uri
+                destinationUri);
     }
 
 }
