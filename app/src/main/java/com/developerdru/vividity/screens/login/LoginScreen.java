@@ -1,23 +1,19 @@
 package com.developerdru.vividity.screens.login;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.developerdru.vividity.R;
 import com.developerdru.vividity.screens.home.HomeScreen;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +24,8 @@ public class LoginScreen extends AppCompatActivity {
 
     private String fcmToken = null;
 
+    private LoginVM loginVM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +35,19 @@ public class LoginScreen extends AppCompatActivity {
 
         // Check if the user has already logged in
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Intent homeScreenIntent = new Intent(this, HomeScreen.class);
-            startActivity(homeScreenIntent);
-            finish();
+            navigateToHome();
         } else {
+            LoginVMFactory loginVMFactory = new LoginVMFactory();
+            loginVM = ViewModelProviders.of(this, loginVMFactory).get(LoginVM.class);
             launchLogin();
             getFCMToken();
         }
+    }
+
+    private void navigateToHome() {
+        Intent homeScreenIntent = new Intent(this, HomeScreen.class);
+        startActivity(homeScreenIntent);
+        finish();
     }
 
     private void launchLogin() {
@@ -67,7 +71,9 @@ public class LoginScreen extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         return;
                     }
-                    // Get new Instance ID token
+                    if (task.getResult() == null) {
+                        return;
+                    }
                     fcmToken = task.getResult().getToken();
                 });
     }
@@ -79,11 +85,33 @@ public class LoginScreen extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
-            if (resultCode == RESULT_OK) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Log.d("Auth", "onActivityResult: provider" + user.getProviderId());
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (resultCode == RESULT_OK && user != null) {
+
+                String provider = response == null ? "Firebase" : response.getProviderType();
+                String providerId = user.getEmail();
+                String userId = user.getUid();
+                String profilePic = user.getPhotoUrl() == null ? null : user.getPhotoUrl()
+                        .toString();
+                String displayName = user.getDisplayName();
+
+
+                loginVM.updateCurrentUserInfo(userId, provider, profilePic, providerId,
+                        displayName, fcmToken)
+                        .observe(this, status -> {
+                            if (status != null) {
+                                if (status.isErroneous()) {
+                                    Toast.makeText(this, status.getExtra(), Toast.LENGTH_SHORT)
+                                            .show();
+                                } else if (status.isComplete()) {
+                                    navigateToHome();
+                                }
+                            }
+                        });
+
             } else {
-                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.msg_login_failed_retry), Toast
+                        .LENGTH_SHORT).show();
             }
         }
     }

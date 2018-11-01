@@ -10,9 +10,12 @@ public class FirebasePaths {
     public static final String STORAGE_PROFILE_PIC_PATH = "profiles";
 
     public static final String USER_FOllOWERS_PATH = "followers";
-    public static final String USER_FOllOWS_PATH = "followed_by";
+    public static final String USER_FOllOWS_PATH = "follows";
     public static final String USER_ID_PATH = "userId";
     public static final String USER_PIC_PATH = "profilePicURL";
     public static final String USER_NAME_PATH = "displayName";
+    public static final String USER_PROVIDER_PATH = "signInService";
+    public static final String USER_PROVIDER_IDENTIFIER_PATH = "signInServiceIdentifier";
+    public static final String USER_FCM_TOKEN_PATH = "fcmToken";
     public static final String USER_NOTIFICATION_PATH = "notification";
 }

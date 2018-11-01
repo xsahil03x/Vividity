@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.developerdru.vividity.data.UserRepository;
@@ -175,9 +174,46 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public LiveData<OperationStatus> updateMyInfo(@Nullable String displayName, @Nullable String
-            profilePicName, @Nullable String profilePicUrl) {
-        // TODO not yet implemented and will probably not be implemented
-        return null;
+    public LiveData<OperationStatus> updateMyInfo(String userId, String provider, String
+            profilePic, String providerIdentifier, String displayName, String fcmToken) {
+
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
+
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put(FirebasePaths.USER_PROVIDER_PATH, provider);
+        newValues.put(FirebasePaths.USER_PROVIDER_IDENTIFIER_PATH, providerIdentifier);
+        newValues.put(FirebasePaths.USER_ID_PATH, userId);
+        newValues.put(FirebasePaths.USER_PIC_PATH, profilePic);
+        newValues.put(FirebasePaths.USER_NAME_PATH, displayName);
+        newValues.put(FirebasePaths.USER_FCM_TOKEN_PATH, fcmToken);
+
+        usersRef.child(userId).updateChildren(newValues)
+                .addOnSuccessListener(a -> status.postValue(OperationStatus
+                        .getCompletedStatus()))
+                .addOnFailureListener(ex -> {
+                    status.postValue(OperationStatus.getErrorStatus(ex.getMessage()));
+                    ex.printStackTrace();
+                });
+
+
+        return status;
+    }
+
+    @Override
+    public LiveData<OperationStatus> updateMyFCMToken(@NonNull String fcmToken) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
+        if (currentUser != null) {
+            usersRef.child(currentUser.getUid())
+                    .child(FirebasePaths.USER_FCM_TOKEN_PATH)
+                    .setValue(fcmToken)
+                    .addOnSuccessListener(aVoid -> status.postValue(OperationStatus
+                            .getCompletedStatus()))
+                    .addOnFailureListener(e -> {
+                        status.postValue(OperationStatus.getErrorStatus(e.getMessage()));
+                        e.printStackTrace();
+                    });
+        }
+        return status;
     }
 }

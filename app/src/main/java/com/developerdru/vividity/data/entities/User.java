@@ -1,16 +1,18 @@
 package com.developerdru.vividity.data.entities;
 
+import java.util.Map;
+
 public class User {
 
     private String userId;
     private boolean uploadPermission = true;
     private String profilePicURL;
-    private String profilePicName;
     private String signInService; // google or twitter
     private String signInServiceIdentifier;
-    private String signInServiceDisplayName;
     private String displayName;
     private String fcmToken;
+    private Map<String, FollowUser> followers;
+    private Map<String, FollowUser> follows;
 
     public String getUserId() {
         return userId;
@@ -36,14 +38,6 @@ public class User {
         this.profilePicURL = profilePicURL;
     }
 
-    public String getProfilePicName() {
-        return profilePicName;
-    }
-
-    public void setProfilePicName(String profilePicName) {
-        this.profilePicName = profilePicName;
-    }
-
     public String getSignInService() {
         return signInService;
     }
@@ -60,14 +54,6 @@ public class User {
         this.signInServiceIdentifier = signInServiceIdentifier;
     }
 
-    public String getSignInServiceDisplayName() {
-        return signInServiceDisplayName;
-    }
-
-    public void setSignInServiceDisplayName(String signInServiceDisplayName) {
-        this.signInServiceDisplayName = signInServiceDisplayName;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
@@ -82,5 +68,21 @@ public class User {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
+    }
+
+    public Map<String, FollowUser> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Map<String, FollowUser> followers) {
+        this.followers = followers;
+    }
+
+    public Map<String, FollowUser> getFollows() {
+        return follows;
+    }
+
+    public void setFollows(Map<String, FollowUser> follows) {
+        this.follows = follows;
     }
 }
