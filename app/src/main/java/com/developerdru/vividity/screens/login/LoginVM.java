@@ -9,8 +9,6 @@ import com.developerdru.vividity.data.remote.OperationStatus;
 
 class LoginVM extends ViewModel {
 
-    private LiveData<OperationStatus> statusLiveData;
-
     private UserRepository repository;
 
     LoginVM(UserRepository userRepository) {

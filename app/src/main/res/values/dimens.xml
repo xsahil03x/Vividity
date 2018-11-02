@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Margin Related-->
+    <dimen name="margin_medium">8dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_x_large">16dp</dimen>
+    <dimen name="margin_xx_large">32dp</dimen>
+
+    <!-- Text related -->
+    <dimen name="txt_regular">16sp</dimen>
+    <dimen name="txt_x_large">30sp</dimen>
+    <dimen name="txt_medium">20sp</dimen>
+    <dimen name="txt_large">24sp</dimen>
+
+    <!-- Padding related -->
+    <dimen name="padding_small">2dp</dimen>
+    <dimen name="padding_medium">4dp</dimen>
+    <dimen name="padding_regular">6dp</dimen>
+
+    <!-- Box related -->
+    <dimen name="box_small">48dp</dimen>
+    <dimen name="box_huge">96dp</dimen>
+    <dimen name="box_regular">80dp</dimen>
+
+    <!-- Elevation related -->
+    <dimen name="elevation_card_regular">4dp</dimen>
+    <dimen name="elevation_card_selected">6dp</dimen>
+    <dimen name="elevation_app_bar">6dp</dimen>
+    <dimen name="elevation_fab">4dp</dimen>
+
+</resources>

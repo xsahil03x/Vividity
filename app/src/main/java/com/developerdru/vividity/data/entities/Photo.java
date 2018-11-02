@@ -1,5 +1,7 @@
 package com.developerdru.vividity.data.entities;
 
+import java.util.Objects;
+
 public class Photo {
 
     private String picIdentifier;
@@ -91,5 +93,19 @@ public class Photo {
 
     public void setUploaderPic(String uploaderPic) {
         this.uploaderPic = uploaderPic;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Photo photo = (Photo) o;
+        return Objects.equals(picIdentifier, photo.picIdentifier) &&
+                Objects.equals(downloadURL, photo.downloadURL);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(picIdentifier, downloadURL);
     }
 }
