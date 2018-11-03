@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryBG"
+    tools:context=".screens.profile.ProfileScreen">
+
+    <ImageView
+        android:id="@+id/imgProfilePicLeft"
+        android:layout_width="@dimen/box_huge"
+        android:layout_height="@dimen/box_huge"
+        android:layout_marginEnd="32dp"
+        android:contentDescription="@string/msg_profile_pic_decoration"
+        android:elevation="@dimen/elevation_small"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_50"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic"
+        tools:src="@drawable/vividity_logo" />
+
+    <ImageView
+        android:id="@+id/imgProfilePicRight"
+        android:layout_width="@dimen/box_huge"
+        android:layout_height="@dimen/box_huge"
+        android:layout_marginStart="32dp"
+        android:contentDescription="@string/msg_profile_pic_decoration"
+        android:elevation="@dimen/elevation_small"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_50"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic"
+        tools:src="@drawable/vividity_logo" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgProfilePic"
+        android:layout_width="@dimen/box_x_huge"
+        android:layout_height="@dimen/box_x_huge"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/msg_profile_pic"
+        android:elevation="@dimen/elevation_regular"
+        app:civ_border_color="@color/borderDark"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/vividity_logo" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_vertical_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:gravity="end|center_vertical"
+        android:maxLines="2"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/txt_x_large"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgProfilePic"
+        tools:text="Kaushal Dhruw" />
+
+    <TextView
+        android:id="@+id/tvProfileUserIdentifier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:drawablePadding="@dimen/margin_medium"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/txt_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileName"
+        tools:drawableStart="@drawable/ic_google"
+        tools:text="Kaushal.dhruw@gmail.com" />
+
+    <View
+        android:id="@+id/vProfileSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/borderDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileUserIdentifier" />
+
+    <TextView
+        android:id="@+id/tvProfileUserFollows"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:gravity="end|center_vertical"
+        android:maxLines="2"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/txt_medium"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vProfileSeparator"
+        tools:text="Kaushal Dhruw Follows: " />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="395dp"
+        android:layout_height="390dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileUserFollows"
+        tools:listitem="@layout/item_follow_user" />
+
+</android.support.constraint.ConstraintLayout>

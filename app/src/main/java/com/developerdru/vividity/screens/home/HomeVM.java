@@ -8,10 +8,11 @@ import com.developerdru.vividity.data.PhotoRepository;
 import com.developerdru.vividity.data.entities.Photo;
 
 import java.lang.annotation.Retention;
+import java.util.List;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
-public class HomeVM extends ViewModel {
+class HomeVM extends ViewModel {
 
     @Retention(SOURCE)
     @IntDef({ORDER_TIME, ORDER_UPVOTE, ORDER_COMMENT_COUNT})
@@ -22,15 +23,14 @@ public class HomeVM extends ViewModel {
     static final int ORDER_UPVOTE = 7;
     static final int ORDER_COMMENT_COUNT = 8;
 
-    private LiveData<Photo> photos;
+    private LiveData<List<Photo>> photos;
 
-    HomeVM(PhotoRepository photoRepository, @OrderByParams int sortBy, long startAt, int
-            limit) {
+    HomeVM(PhotoRepository photoRepository, @OrderByParams int sortBy) {
         int sortByParam = getSortByParam(sortBy);
-        photos = photoRepository.getPhotos(sortByParam, startAt, limit);
+        photos = photoRepository.getPhotos(sortByParam);
     }
 
-    public LiveData<Photo> getPhotos() {
+    LiveData<List<Photo>> getPhotos() {
         return photos;
     }
 

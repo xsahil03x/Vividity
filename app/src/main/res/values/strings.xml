@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">Vividity</string>
     <!-- Twitter consumer key and secret -->
-    <string name="twitter_consumer_key" translatable="false">0vHTRptlvJdETVYLvMhvUbcIg</string>
-    <string name="twitter_consumer_secret" translatable="false">nJWW0QDrl1bYqBQH8c65SxZUwovKGvfsvzchk9R8oYgUFDqpv8</string>
+    <string name="twitter_consumer_key" translatable="false">0vHTRptlvJdETVYLvMhvUbcIkkdg</string>
+    <string name="twitter_consumer_secret" translatable="false">nJWW0QDrl1bYqBQH8c65SxZUwovKGvfsvzchk9R8oYgUFDqpvkkd8</string>
     <string name="msg_login_failed_retry">Login Failed, please try again later</string>
     <string name="menu_title_profile">Profile</string>
     <string name="menu_title_feedback">Feedback</string>
     <string name="menu_title_signout">Logout</string>
     <string name="txt_baby_image">Baby\'s photo</string>
+    <string name="msg_add_photo">Add photo to the app</string>
+    <string name="msg_profile_pic">Profile picture</string>
+    <string name="msg_profile_pic_decoration">Profile pic decorators</string>
+    <string name="txt_notification">Notification</string>
+    <string name="msg_unfollow_description">Unfollow a user</string>
+    <string name="menu_title_follow">Follow</string>
 </resources>

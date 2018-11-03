@@ -1,5 +1,7 @@
 package com.developerdru.vividity.data.entities;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.Objects;
 
 public class Photo {

@@ -112,6 +112,7 @@ public class LoginScreen extends AppCompatActivity {
             } else {
                 Toast.makeText(this, getString(R.string.msg_login_failed_retry), Toast
                         .LENGTH_SHORT).show();
+                finish();
             }
         }
     }

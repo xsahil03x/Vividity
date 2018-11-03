@@ -100,6 +100,7 @@ dependencies {
 
     // FirebaseUI for Cloud Storage
     implementation 'com.firebaseui:firebase-ui-storage:4.2.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     // for circular image views
     implementation 'de.hdodenhof:circleimageview:2.2.0'

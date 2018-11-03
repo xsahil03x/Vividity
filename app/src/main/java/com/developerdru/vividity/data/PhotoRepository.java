@@ -23,5 +23,5 @@ public interface PhotoRepository {
     int ORDER_UPVOTE_DESC = 2;
     int ORDER_COMMENT_COUNT_DESC = 3;
 
-    LiveData<Photo> getPhotos(@OrderByParams int orderBy, long startAt, int limit);
+    LiveData<List<Photo>> getPhotos(@OrderByParams int orderBy);
 }

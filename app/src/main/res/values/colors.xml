@@ -7,4 +7,5 @@
     <color name="textHighlighted">#DB4750</color>
     <color name="pureWhite">#FFFFFF</color>
     <color name="primaryBG">#9FEEEF</color>
+    <color name="borderDark">#333333</color>
 </resources>
