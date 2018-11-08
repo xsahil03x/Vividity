@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.IntDef;
 
 import com.developerdru.vividity.data.PhotoRepository;
+import com.developerdru.vividity.data.UserRepository;
+import com.developerdru.vividity.data.entities.FollowUser;
 import com.developerdru.vividity.data.entities.Photo;
 
 import java.lang.annotation.Retention;
@@ -25,13 +27,21 @@ class HomeVM extends ViewModel {
 
     private LiveData<List<Photo>> photos;
 
-    HomeVM(PhotoRepository photoRepository, @OrderByParams int sortBy) {
+    private LiveData<List<FollowUser>> myFollows;
+
+    HomeVM(PhotoRepository photoRepository, UserRepository userRepository, String myId,
+           @OrderByParams int sortBy) {
         int sortByParam = getSortByParam(sortBy);
         photos = photoRepository.getPhotos(sortByParam);
+        myFollows = userRepository.getFollowsList(myId);
     }
 
     LiveData<List<Photo>> getPhotos() {
         return photos;
+    }
+
+    LiveData<List<FollowUser>> getMyFollows() {
+        return myFollows;
     }
 
     private int getSortByParam(@OrderByParams int sortBy) {

@@ -25,7 +25,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoVH> {
     private static final String FORMAT_DATE = "MMM-dd, yyyy";
     private SimpleDateFormat dateFormat;
 
-    PhotoAdapter() {
+    private OnClickListener listener;
+
+    PhotoAdapter(OnClickListener listener) {
+        this.listener = listener;
         photos = new ArrayList<>();
         dateFormat = new SimpleDateFormat(FORMAT_DATE, Locale.getDefault());
     }
@@ -85,6 +88,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoVH> {
             tvCommentCount.setText(String.valueOf(photo.getCommentsCount()));
             tvUpVoteCount.setText(String.valueOf(photo.getUpvoteCount()));
             tvUploadDate.setText(dateFormat.format(photo.getTimestamp()));
+
+            imgMain.setOnClickListener(v -> listener.onPhotoTapped(photo));
+            imgUploader.setOnClickListener(v -> listener.onUploaderTapped(photo));
         }
+    }
+
+    interface OnClickListener {
+        void onPhotoTapped(Photo photo);
+
+        void onUploaderTapped(Photo photo);
     }
 }

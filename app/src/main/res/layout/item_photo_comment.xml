@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_medium"
-    android:background="@drawable/pill_follower"
+    android:background="@drawable/pill_comment"
     android:elevation="@dimen/elevation_regular"
-    android:minHeight="40dp">
+    android:minHeight="60dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgMyFollow"
-        android:layout_width="@dimen/box_v_small"
-        android:layout_height="@dimen/box_v_small"
+        android:id="@+id/imgCommenter"
+        android:layout_width="@dimen/box_small"
+        android:layout_height="@dimen/box_small"
         android:layout_margin="@dimen/margin_small"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -25,47 +25,56 @@
         tools:src="@drawable/vividity_logo" />
 
     <TextView
-        android:id="@+id/tvMyFollow"
+        android:id="@+id/tvCommentText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/txt_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgCommenter"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="This is an actual comment. Well a comment in the design mode. In the design mode. This is an actual comment. Well a comment in the design mode." />
+
+    <TextView
+        android:id="@+id/tvCommenterName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/txt_v_small"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/switchFollowNotification"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imgMyFollow"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgCommenter"
         tools:text="Kaushal Dhruw" />
 
-    <Switch
-        android:id="@+id/switchFollowNotification"
+    <TextView
+        android:id="@+id/tvCommentDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:drawablePadding="@dimen/margin_small"
-        android:enabled="true"
-        android:checked="true"
-        android:text="@string/txt_notification"
+        android:layout_marginEnd="@dimen/margin_xx_large"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/txt_small"
+        android:textSize="@dimen/txt_v_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:text="Kaushal Dhruw" />
 
     <ImageView
-        android:id="@+id/imgFollowDelete"
+        android:id="@+id/imgCommentDelete"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:contentDescription="@string/msg_unfollow_description"
+        android:contentDescription="@string/msg_delete_comment_description"
         android:src="@drawable/ic_delete_icon"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

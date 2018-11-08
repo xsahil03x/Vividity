@@ -37,4 +37,19 @@ public class FollowUser {
     public void setNotification(boolean notification) {
         this.notification = notification;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FollowUser that = (FollowUser) o;
+
+        return userId.equals(that.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return userId.hashCode();
+    }
 }

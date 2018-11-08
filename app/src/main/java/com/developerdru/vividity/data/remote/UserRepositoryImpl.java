@@ -12,10 +12,13 @@ import com.developerdru.vividity.data.entities.User;
 import com.developerdru.vividity.utils.FirebasePaths;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -47,17 +50,29 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public LiveData<FollowUser> getFollowerList(String userId) {
+    public LiveData<List<FollowUser>> getFollowerList(String userId) {
         FirebaseQueryLiveData userData = new FirebaseQueryLiveData(usersRef.child(userId)
                 .child(FirebasePaths.USER_FOllOWERS_PATH));
-        return Transformations.map(userData, input -> input.getValue(FollowUser.class));
+        return Transformations.map(userData, input -> {
+            List<FollowUser> followers = new ArrayList<>();
+            for (DataSnapshot snapshot : input.getChildren()) {
+                followers.add(snapshot.getValue(FollowUser.class));
+            }
+            return followers;
+        });
     }
 
     @Override
-    public LiveData<FollowUser> getFollowsList(String userId) {
+    public LiveData<List<FollowUser>> getFollowsList(String userId) {
         FirebaseQueryLiveData userData = new FirebaseQueryLiveData(usersRef.child(userId)
                 .child(FirebasePaths.USER_FOllOWS_PATH));
-        return Transformations.map(userData, input -> input.getValue(FollowUser.class));
+        return Transformations.map(userData, input -> {
+            List<FollowUser> follows = new ArrayList<>();
+            for (DataSnapshot snapshot : input.getChildren()) {
+                follows.add(snapshot.getValue(FollowUser.class));
+            }
+            return follows;
+        });
     }
 
     @Override
@@ -152,7 +167,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public LiveData<OperationStatus> updateNotificationSetting(@NonNull String userId, boolean
-            follow) {
+            getNotification) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
         if (currentUser != null) {
@@ -160,7 +175,7 @@ public class UserRepositoryImpl implements UserRepository {
                     .child(FirebasePaths.USER_FOllOWS_PATH)
                     .child(userId)
                     .child(FirebasePaths.USER_NOTIFICATION_PATH)
-                    .setValue(follow)
+                    .setValue(getNotification)
                     .addOnSuccessListener(a -> status.postValue(OperationStatus
                             .getCompletedStatus()))
                     .addOnFailureListener(ex -> {

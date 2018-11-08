@@ -11,15 +11,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.developerdru.vividity.R;
+import com.developerdru.vividity.data.entities.FollowUser;
+import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.screens.login.LoginScreen;
+import com.developerdru.vividity.screens.profile.ProfileScreen;
 import com.developerdru.vividity.utils.Utility;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClickListener {
 
     PhotoAdapter photoAdapter;
 
     HomeVM homeVM;
+
+    private String myId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +33,12 @@ public class HomeScreen extends AppCompatActivity {
 
         RecyclerView rvPhotos = findViewById(R.id.rv_photo_list);
         rvPhotos.setLayoutManager(new LinearLayoutManager(this));
-        photoAdapter = new PhotoAdapter();
+        photoAdapter = new PhotoAdapter(this);
         rvPhotos.setAdapter(photoAdapter);
 
-        HomeVMFactory homeVMFactory = new HomeVMFactory(HomeVM.ORDER_TIME);
+        myId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        HomeVMFactory homeVMFactory = new HomeVMFactory(HomeVM.ORDER_TIME, myId);
         homeVM = ViewModelProviders.of(this, homeVMFactory).get(HomeVM.class);
         observeChanges();
     }
@@ -64,5 +71,30 @@ public class HomeScreen extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPhotoTapped(Photo photo) {
+        // TODO navigate to details page
+    }
+
+    @Override
+    public void onUploaderTapped(Photo photo) {
+        String uploaderId = photo.getUploaderId();
+        homeVM.getMyFollows().observe(this, followUsers -> {
+            boolean follows = false;
+            if (followUsers != null) {
+                for (FollowUser followUser : followUsers) {
+                    if (followUser.getUserId().equalsIgnoreCase(uploaderId)) {
+                        follows = true;
+                        break;
+                    }
+                }
+            }
+            homeVM.getMyFollows().removeObservers(HomeScreen.this);
+            Intent profileScreenIntent = ProfileScreen.getLaunchIntent(HomeScreen.this, uploaderId,
+                    uploaderId.equalsIgnoreCase(myId), follows);
+            startActivity(profileScreenIntent);
+        });
     }
 }

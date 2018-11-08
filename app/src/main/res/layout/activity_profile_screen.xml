@@ -7,6 +7,26 @@
     android:background="@color/primaryBG"
     tools:context=".screens.profile.ProfileScreen">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/pureWhite">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
     <ImageView
         android:id="@+id/imgProfilePicLeft"
         android:layout_width="@dimen/box_huge"
@@ -44,7 +64,7 @@
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_profile"
         tools:src="@drawable/vividity_logo" />
 
     <android.support.constraint.Guideline
@@ -120,6 +140,7 @@
         tools:text="Kaushal Dhruw Follows: " />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvFollowsList"
         android:layout_width="395dp"
         android:layout_height="390dp"
         android:layout_marginStart="16dp"
@@ -131,5 +152,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProfileUserFollows"
         tools:listitem="@layout/item_follow_user" />
+
+    <View
+        android:id="@+id/viewOverlayProfile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#AA000000"
+        android:elevation="@dimen/elevation_max"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/prg_profile_screen"
+        android:layout_width="@dimen/box_huge"
+        android:layout_height="@dimen/box_huge"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="@dimen/elevation_max_plus"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

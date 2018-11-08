@@ -33,7 +33,18 @@
 
         <activity
             android:name=".screens.home.HomeScreen"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".screens.profile.ProfileScreen"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".screens.details.AddPhotoScreen"
+            android:label="@string/title_activity_add_photo_screen"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".screens.home.HomeScreen"
+            android:theme="@style/AppTheme" />
 
         <service android:name=".services.PushNotificationService">
             <intent-filter>
@@ -47,8 +58,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
-
-        <activity android:name=".screens.profile.ProfileScreen"></activity>
     </application>
 
 </manifest>
