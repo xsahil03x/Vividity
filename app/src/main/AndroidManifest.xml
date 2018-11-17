@@ -40,7 +40,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".screens.details.AddPhotoScreen"
+            android:name=".screens.details.PhotoDetailsScreen"
             android:label="@string/title_activity_add_photo_screen"
             android:screenOrientation="portrait"
             android:parentActivityName=".screens.home.HomeScreen"

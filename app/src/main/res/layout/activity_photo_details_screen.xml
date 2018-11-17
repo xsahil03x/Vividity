@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".screens.details.AddPhotoScreen">
+    tools:context=".screens.details.PhotoDetailsScreen">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -44,7 +44,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_add_photo_screen" />
+    <include layout="@layout/content_photo_details" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

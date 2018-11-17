@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.developerdru.vividity.R;
 
-public class AddPhotoScreen extends AppCompatActivity {
+public class PhotoDetailsScreen extends AppCompatActivity {
 
     private static final String KEY_PHOTOID = "photoId";
     private static final String KEY_IS_MY_PIC = "isMyPic";
@@ -19,7 +19,7 @@ public class AddPhotoScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_photo_screen);
+        setContentView(R.layout.activity_photo_details_screen);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -33,7 +33,7 @@ public class AddPhotoScreen extends AppCompatActivity {
 
     public static Intent getLaunchIntent(@NonNull Context context, @NonNull String photoId,
                                          boolean isMyPic) {
-        Intent launchIntent = new Intent(context, AddPhotoScreen.class);
+        Intent launchIntent = new Intent(context, PhotoDetailsScreen.class);
         launchIntent.putExtra(KEY_PHOTOID, photoId);
         launchIntent.putExtra(KEY_IS_MY_PIC, isMyPic);
         return launchIntent;
