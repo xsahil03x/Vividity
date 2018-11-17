@@ -10,8 +10,10 @@ import com.developerdru.vividity.utils.FirebasePaths;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +44,25 @@ public class CommentRepositoryImpl implements CommentRepository {
         return Transformations.map(commentsData, new Function<DataSnapshot, List<PhotoComment>>() {
             @Override
             public List<PhotoComment> apply(DataSnapshot input) {
-                return new ArrayList<>(((Map<String, PhotoComment>) input.getValue())
-                        .values());
+                GenericTypeIndicator<Map<String, PhotoComment>> typeIndicator = new
+                        GenericTypeIndicator<Map<String, PhotoComment>>() {
+                        };
+                Map<String, PhotoComment> photoCommentMap = input.getValue(typeIndicator);
+                if (photoCommentMap != null) {
+                    for (Map.Entry<String, PhotoComment> item : photoCommentMap.entrySet()) {
+                        item.getValue().setCommentIdentifier(item.getKey());
+                    }
+                }
+                List<PhotoComment> comments = new ArrayList<>(photoCommentMap.values());
+                Collections.sort(comments, (o1, o2) ->
+                        (int) (o1.getTimestamp() - o2.getTimestamp()));
+                return comments;
             }
         });
+    }
+
+    @Override
+    public void deleteComment(String photoId, String commentId) {
+        commentsRef.child(photoId).child(commentId).removeValue();
     }
 }

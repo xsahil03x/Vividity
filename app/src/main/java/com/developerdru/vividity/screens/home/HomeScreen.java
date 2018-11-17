@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.developerdru.vividity.R;
 import com.developerdru.vividity.data.entities.FollowUser;
 import com.developerdru.vividity.data.entities.Photo;
+import com.developerdru.vividity.screens.details.PhotoDetailsScreen;
 import com.developerdru.vividity.screens.login.LoginScreen;
 import com.developerdru.vividity.screens.profile.ProfileScreen;
 import com.developerdru.vividity.utils.Utility;
@@ -75,7 +76,8 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
 
     @Override
     public void onPhotoTapped(Photo photo) {
-        // TODO navigate to details page
+        Intent detailIntent = PhotoDetailsScreen.getLaunchIntent(this, photo.getPicIdentifier());
+        startActivity(detailIntent);
     }
 
     @Override

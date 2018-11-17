@@ -16,7 +16,7 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
     private final Query query;
     private final InternalValueEventListener listener = new InternalValueEventListener();
 
-    public FirebaseQueryLiveData(Query query) {
+    FirebaseQueryLiveData(Query query) {
         this.query = query;
     }
 

@@ -2,6 +2,7 @@ package com.developerdru.vividity.data;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 
 import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.data.entities.PhotoComment;
@@ -24,4 +25,6 @@ public interface PhotoRepository {
     int ORDER_COMMENT_COUNT_DESC = 3;
 
     LiveData<List<Photo>> getPhotos(@OrderByParams int orderBy);
+
+    LiveData<Photo> getPhotoDetails(@NonNull String photoId);
 }

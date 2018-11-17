@@ -2,6 +2,7 @@ package com.developerdru.vividity.data.remote;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
+import android.support.annotation.NonNull;
 
 import com.developerdru.vividity.data.PhotoRepository;
 import com.developerdru.vividity.data.entities.Photo;
@@ -65,5 +66,12 @@ public class PhotoRepositoryImpl implements PhotoRepository {
             Collections.reverse(photos);
             return photos;
         });
+    }
+
+    @Override
+    public LiveData<Photo> getPhotoDetails(@NonNull String photoId) {
+        Query photoQuery = photosRef.child(photoId);
+        FirebaseQueryLiveData photosData = new FirebaseQueryLiveData(photoQuery);
+        return Transformations.map(photosData, snapshot -> snapshot.getValue(Photo.class));
     }
 }
