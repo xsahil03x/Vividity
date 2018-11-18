@@ -33,7 +33,7 @@
 
         <activity
             android:name=".screens.home.HomeScreen"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".screens.profile.ProfileScreen"

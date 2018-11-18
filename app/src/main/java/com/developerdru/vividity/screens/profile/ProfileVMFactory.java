@@ -11,15 +11,17 @@ public class ProfileVMFactory extends ViewModelProvider.NewInstanceFactory {
 
     private UserRepository userRepository;
     private String userId;
+    private String myId;
 
-    public ProfileVMFactory(String userId) {
+    ProfileVMFactory(String userId, String myId) {
         this.userRepository = RepositoryFactory.getUserRepository();
         this.userId = userId;
+        this.myId = myId;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new ProfileVM(userId, userRepository);
+        return (T) new ProfileVM(userId, myId, userRepository);
     }
 }

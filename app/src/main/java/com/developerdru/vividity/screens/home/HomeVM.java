@@ -27,21 +27,23 @@ class HomeVM extends ViewModel {
 
     private LiveData<List<Photo>> photos;
 
-    private LiveData<List<FollowUser>> myFollows;
+    private String myId;
+    private UserRepository userRepository;
 
     HomeVM(PhotoRepository photoRepository, UserRepository userRepository, String myId,
            @OrderByParams int sortBy) {
+        this.myId = myId;
+        this.userRepository = userRepository;
         int sortByParam = getSortByParam(sortBy);
         photos = photoRepository.getPhotos(sortByParam);
-        myFollows = userRepository.getFollowsList(myId);
     }
 
     LiveData<List<Photo>> getPhotos() {
         return photos;
     }
 
-    LiveData<List<FollowUser>> getMyFollows() {
-        return myFollows;
+    LiveData<Boolean> amIFollowing(String userIdToCheck) {
+        return userRepository.checkFollowStatus(userIdToCheck, myId);
     }
 
     private int getSortByParam(@OrderByParams int sortBy) {

@@ -41,23 +41,23 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     public LiveData<List<PhotoComment>> getCommentsForPhoto(String photoId) {
         FirebaseQueryLiveData commentsData = new FirebaseQueryLiveData(commentsRef.child(photoId));
-        return Transformations.map(commentsData, new Function<DataSnapshot, List<PhotoComment>>() {
-            @Override
-            public List<PhotoComment> apply(DataSnapshot input) {
-                GenericTypeIndicator<Map<String, PhotoComment>> typeIndicator = new
-                        GenericTypeIndicator<Map<String, PhotoComment>>() {
-                        };
-                Map<String, PhotoComment> photoCommentMap = input.getValue(typeIndicator);
-                if (photoCommentMap != null) {
-                    for (Map.Entry<String, PhotoComment> item : photoCommentMap.entrySet()) {
-                        item.getValue().setCommentIdentifier(item.getKey());
-                    }
+        return Transformations.map(commentsData, input -> {
+            GenericTypeIndicator<Map<String, PhotoComment>> typeIndicator = new
+                    GenericTypeIndicator<Map<String, PhotoComment>>() {
+                    };
+            Map<String, PhotoComment> photoCommentMap = input.getValue(typeIndicator);
+            if (photoCommentMap != null) {
+                for (Map.Entry<String, PhotoComment> item : photoCommentMap.entrySet()) {
+                    item.getValue().setCommentIdentifier(item.getKey());
                 }
-                List<PhotoComment> comments = new ArrayList<>(photoCommentMap.values());
+            }
+            List<PhotoComment> comments = null;
+            if (photoCommentMap != null) {
+                comments = new ArrayList<>(photoCommentMap.values());
                 Collections.sort(comments, (o1, o2) ->
                         (int) (o1.getTimestamp() - o2.getTimestamp()));
-                return comments;
             }
+            return comments;
         });
     }
 

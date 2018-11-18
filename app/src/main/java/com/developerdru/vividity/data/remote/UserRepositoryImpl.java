@@ -76,6 +76,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public LiveData<Boolean> checkFollowStatus(@NonNull String userId, @NonNull String myId) {
+        FirebaseQueryLiveData userData = new FirebaseQueryLiveData(usersRef.child(myId)
+                .child(FirebasePaths.USER_FOllOWS_PATH).child(userId));
+        return Transformations.map(userData, input -> input != null && input.getValue() != null);
+    }
+
+    @Override
     public LiveData<OperationStatus> followUser(@NonNull String userId, @NonNull String userName,
                                                 @NonNull String profilePic) {
 

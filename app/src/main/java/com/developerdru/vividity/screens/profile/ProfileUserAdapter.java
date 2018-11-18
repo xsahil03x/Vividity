@@ -84,6 +84,7 @@ class ProfileUserAdapter extends RecyclerView.Adapter<ProfileUserAdapter.FollowU
 
             imgDelete.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
             imgDelete.setOnClickListener(v -> listener.onDeleteTapped(user));
+            imgUser.setOnClickListener(v -> listener.onProfilePicTapped(user));
 
             notification.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
             notification.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -96,6 +97,8 @@ class ProfileUserAdapter extends RecyclerView.Adapter<ProfileUserAdapter.FollowU
         void onNotificationStatusChange(FollowUser followUser, boolean getNotified);
 
         void onDeleteTapped(FollowUser followUser);
+
+        void onProfilePicTapped(FollowUser followUser);
     }
 
 }

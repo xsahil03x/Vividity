@@ -6,10 +6,28 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionMenuTextColor">@color/pureWhite</item>
+        <item name="actionMenuTextColor">@color/pureWhite</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/popup_large_text_appearance</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/popup_small_text_appearance</item>
+        <item name="android:actionOverflowButtonStyle">@style/overflow_menu_icon</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="popup_small_text_appearance" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="popup_large_text_appearance" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="overflow_menu_icon">
+        <item name="android:src">@drawable/more</item>
+        <item name="android:padding">@dimen/margin_x_large</item>
+    </style>
 
 </resources>

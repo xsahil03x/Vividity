@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            app:title="@string/app_name"
+            app:title="@string/txt_profile_screen_header"
             app:titleTextColor="@color/pureWhite">
 
         </android.support.v7.widget.Toolbar>
@@ -31,25 +31,31 @@
         android:id="@+id/imgProfilePicLeft"
         android:layout_width="@dimen/box_huge"
         android:layout_height="@dimen/box_huge"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="32dp"
         android:contentDescription="@string/msg_profile_pic_decoration"
         android:elevation="@dimen/elevation_small"
+        android:src="@drawable/vividity_logo"
         app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_50"
-        app:layout_constraintTop_toTopOf="@+id/imgProfilePic"
-        tools:src="@drawable/vividity_logo" />
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic" />
 
     <ImageView
         android:id="@+id/imgProfilePicRight"
         android:layout_width="@dimen/box_huge"
         android:layout_height="@dimen/box_huge"
         android:layout_marginStart="32dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="@string/msg_profile_pic_decoration"
         android:elevation="@dimen/elevation_small"
+        android:src="@drawable/vividity_logo"
         app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_50"
-        app:layout_constraintTop_toTopOf="@+id/imgProfilePic"
-        tools:src="@drawable/vividity_logo" />
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgProfilePic"
@@ -140,18 +146,19 @@
         tools:text="Kaushal Dhruw Follows: " />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvFollowsList"
-        android:layout_width="395dp"
-        android:layout_height="390dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:id="@+id/rvUserFollows"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_medium"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProfileUserFollows"
-        tools:listitem="@layout/item_follow_user" />
+        tools:listitem="@layout/item_follow_user">
+
+    </android.support.v7.widget.RecyclerView>
 
     <View
         android:id="@+id/viewOverlayProfile"
@@ -159,7 +166,7 @@
         android:layout_height="0dp"
         android:background="#AA000000"
         android:elevation="@dimen/elevation_max"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -174,7 +181,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="@dimen/elevation_max_plus"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

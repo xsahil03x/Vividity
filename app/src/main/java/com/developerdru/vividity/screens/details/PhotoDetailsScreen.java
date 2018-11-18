@@ -6,13 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.developerdru.vividity.R;
 import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.data.entities.PhotoComment;
@@ -27,7 +32,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
 
     private static final String KEY_PHOTO_ID = "photoId";
 
-    private static final String DATE_FORMAT = "mmm-dd, yyyy";
+    private static final String DATE_FORMAT = "MMM-dd, yyyy";
 
     RecyclerView rvComments;
     ImageView imgPhotoDetails, imgUploader;
@@ -47,6 +52,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         setContentView(R.layout.activity_photo_details_screen);
         toolbar = findViewById(R.id.toolbar_img_deails);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
 
         initializeUI();
 
@@ -60,13 +66,14 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         if (photoId == null || photoId.isEmpty()) {
             Toast.makeText(this, getString(R.string.missing_required_params), Toast
                     .LENGTH_SHORT).show();
+            Crashlytics.log(this.getClass().getSimpleName() + ": params missing. photoId: " +
+                    photoId);
             finish();
             return;
         }
 
         PhotoDetailsVMFactory factory = new PhotoDetailsVMFactory(photoId);
-        photoDetailsVM = ViewModelProviders.of(this, factory).get(PhotoDetailsVM
-                .class);
+        photoDetailsVM = ViewModelProviders.of(this, factory).get(PhotoDetailsVM.class);
 
         photoDetailsVM.getPhotoMetadata().observe(this, this::populatePhotoDetails);
 
@@ -80,9 +87,27 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (upIntent != null && NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.create(this)
+                            .addNextIntentWithParentStack(upIntent)
+                            .startActivities();
+                } else if (upIntent != null) {
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initializeUI() {
 
         rvComments = findViewById(R.id.rvPhotoComments);
+        rvComments.setLayoutManager(new LinearLayoutManager(this));
         commentAdapter = new CommentAdapter(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                 this);
         rvComments.setAdapter(commentAdapter);

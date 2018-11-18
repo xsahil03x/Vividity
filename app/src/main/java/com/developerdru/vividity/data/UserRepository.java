@@ -25,6 +25,8 @@ public interface UserRepository {
 
     LiveData<OperationStatus> unFollowUser(@NonNull String userId);
 
+    LiveData<Boolean> checkFollowStatus(@NonNull String userId, @NonNull String myId);
+
     LiveData<OperationStatus> updateNotificationSetting(@NonNull String userId, boolean
             getNotification);
 

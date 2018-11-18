@@ -13,12 +13,13 @@ import com.developerdru.vividity.data.entities.PhotoComment;
 import com.developerdru.vividity.utils.GlideApp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
 
-    private static final String DATE_FORMAT = "mmm-dd, yyyy";
+    private static final String DATE_FORMAT = "MMM-dd, yyyy";
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT,
             Locale.US);
 
@@ -30,9 +31,10 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
     CommentAdapter(@NonNull String myId, @NonNull Listener listener) {
         this.myId = myId;
         this.listener = listener;
+        this.commentList = new ArrayList<>();
     }
 
-    public void addComments(List<PhotoComment> comments) {
+    void addComments(List<PhotoComment> comments) {
         this.commentList.clear();
         this.commentList.addAll(comments);
         notifyDataSetChanged();

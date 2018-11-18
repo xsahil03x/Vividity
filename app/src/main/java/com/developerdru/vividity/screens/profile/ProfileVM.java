@@ -19,10 +19,14 @@ class ProfileVM extends ViewModel {
 
     private UserRepository userRepository;
 
-    ProfileVM(String userId, @NonNull UserRepository userRepository) {
+    private String myId;
+
+    ProfileVM(String userId, String myId, @NonNull UserRepository userRepository) {
         this.userRepository = userRepository;
         this.userData = this.userRepository.getUserInfo(userId);
         this.follows = userRepository.getFollowsList(userId);
+        LiveData<List<FollowUser>> myFollows = userRepository.getFollowsList(myId);
+        this.myId = myId;
     }
 
     LiveData<User> getUserData() {
@@ -33,6 +37,10 @@ class ProfileVM extends ViewModel {
         return follows;
     }
 
+    LiveData<Boolean> amIFollowing(String userIdToCheck) {
+        return userRepository.checkFollowStatus(userIdToCheck, myId);
+    }
+
     LiveData<OperationStatus> changeUserNotificationStatus(@NonNull String userId, boolean
             getNotified) {
         return userRepository.updateNotificationSetting(userId, getNotified);
@@ -40,5 +48,9 @@ class ProfileVM extends ViewModel {
 
     LiveData<OperationStatus> unfollowUser(@NonNull String userId) {
         return userRepository.unFollowUser(userId);
+    }
+
+    LiveData<OperationStatus> followUser(String userId, String userName, String profilePic) {
+        return userRepository.followUser(userId, userName, profilePic);
     }
 }

@@ -15,7 +15,7 @@
     <string name="msg_unfollow_description">Unfollow a user</string>
     <string name="menu_title_follow">Follow</string>
     <string name="menu_title_unfollow">Unfollow</string>
-    <string name="user_follows_text">%s follows:</string>
+    <string name="user_follows_text" formatted="true">%s follows:</string>
     <string name="err_user_not_found">User not found in our database</string>
     <string name="title_activity_add_photo_screen">AddPhotoScreen</string>
     <string name="large_text">
@@ -112,4 +112,6 @@
     <string name="msg_delete_comment_description">Deletes a comment</string>
     <string name="missing_required_params">Required parameters are missing for Details</string>
     <string name="txt_uploaded_by_you">Uploaded by you</string>
+    <string name="txt_profile_screen_header">Profile</string>
+    <string name="txt_my_profile_screen_header">My Profile</string>
 </resources>

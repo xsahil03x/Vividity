@@ -1,11 +1,13 @@
 package com.developerdru.vividity.screens.home;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +33,9 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_home);
+        setSupportActionBar(toolbar);
 
         RecyclerView rvPhotos = findViewById(R.id.rv_photo_list);
         rvPhotos.setLayoutManager(new LinearLayoutManager(this));
@@ -59,7 +64,8 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_profile:
-                // TODO launch my profile page
+                Intent profileIntent = ProfileScreen.getLaunchIntent(this, myId, true, false);
+                startActivity(profileIntent);
                 return true;
             case R.id.menu_feedback:
                 Utility.emailFeedbackIntent(this);
@@ -83,19 +89,12 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
     @Override
     public void onUploaderTapped(Photo photo) {
         String uploaderId = photo.getUploaderId();
-        homeVM.getMyFollows().observe(this, followUsers -> {
-            boolean follows = false;
-            if (followUsers != null) {
-                for (FollowUser followUser : followUsers) {
-                    if (followUser.getUserId().equalsIgnoreCase(uploaderId)) {
-                        follows = true;
-                        break;
-                    }
-                }
-            }
-            homeVM.getMyFollows().removeObservers(HomeScreen.this);
+        LiveData<Boolean> followLiveData = homeVM.amIFollowing(uploaderId);
+        followLiveData.observe(this, follows -> {
+            followLiveData.removeObservers(this);
+            boolean followStatus = follows == null ? false : follows;
             Intent profileScreenIntent = ProfileScreen.getLaunchIntent(HomeScreen.this, uploaderId,
-                    uploaderId.equalsIgnoreCase(myId), follows);
+                    uploaderId.equalsIgnoreCase(myId), followStatus);
             startActivity(profileScreenIntent);
         });
     }
