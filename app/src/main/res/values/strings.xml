@@ -128,4 +128,6 @@
     <string name="write_external_sd_rationale">Required for saving photos locally</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="txt_widget_image_desc">Widget image from app</string>
+    <string name="txt_widget_uploader_desc">Photo uploaded by</string>
 </resources>
