@@ -116,12 +116,6 @@ dependencies {
 
     // For image cropping
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
-
-    // Reactive extension
-    implementation "io.reactivex.rxjava2:rxjava:2.1.5"
-    // RxBindings
-    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
-
 }
 
 apply plugin: 'com.google.gms.google-services'
