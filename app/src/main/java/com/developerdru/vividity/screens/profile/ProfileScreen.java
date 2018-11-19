@@ -100,7 +100,10 @@ public class ProfileScreen extends AppCompatActivity implements ProfileUserAdapt
         profileVM.getUserData().observe(this, user -> {
             if (user != null) {
                 this.user = user;
-                GlideApp.with(this).load(user.getProfilePicURL()).into(imgProfilePic);
+                GlideApp.with(this).load(user.getProfilePicURL())
+                        .placeholder(R.drawable.ic_logo_baby)
+                        .error(R.drawable.ic_baby_mono)
+                        .into(imgProfilePic);
                 tvProfileName.setText(user.getDisplayName());
                 int providerDrawableRes = Utility.getSignInServiceDrawable(user.getSignInService());
                 tvUserIdentifier.setCompoundDrawablesRelativeWithIntrinsicBounds

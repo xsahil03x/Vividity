@@ -80,7 +80,7 @@
         android:inputType="text"
         android:textColor="@color/colorPrimaryDark"
         tools:ignore="Autofill"
-        tools:text="jkjkgkjggbvbnvcb" />
+        tools:text="Comment here" />
 
     <ImageView
         android:id="@+id/imgSendComment"

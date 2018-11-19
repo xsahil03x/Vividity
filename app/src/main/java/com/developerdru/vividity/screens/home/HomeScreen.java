@@ -11,9 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.developerdru.vividity.R;
-import com.developerdru.vividity.data.entities.FollowUser;
 import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.screens.details.PhotoDetailsScreen;
 import com.developerdru.vividity.screens.login.LoginScreen;
@@ -27,7 +27,10 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
 
     HomeVM homeVM;
 
-    private String myId;
+    private String myId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+    // UI elements
+    View progressBar, overlayView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +40,12 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
         Toolbar toolbar = findViewById(R.id.toolbar_home);
         setSupportActionBar(toolbar);
 
+        overlayView = findViewById(R.id.viewOverlayHome);
+        progressBar = findViewById(R.id.prg_home_screen);
         RecyclerView rvPhotos = findViewById(R.id.rv_photo_list);
         rvPhotos.setLayoutManager(new LinearLayoutManager(this));
         photoAdapter = new PhotoAdapter(this);
         rvPhotos.setAdapter(photoAdapter);
-
-        myId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         HomeVMFactory homeVMFactory = new HomeVMFactory(HomeVM.ORDER_TIME, myId);
         homeVM = ViewModelProviders.of(this, homeVMFactory).get(HomeVM.class);
@@ -50,7 +53,11 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
     }
 
     private void observeChanges() {
-        homeVM.getPhotos().observe(this, photos -> photoAdapter.resetPhotos(photos));
+        showLoading();
+        homeVM.getPhotos().observe(this, photos -> {
+            photoAdapter.resetPhotos(photos);
+            hideLoading();
+        });
     }
 
     @Override
@@ -78,6 +85,16 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLoading() {
+        overlayView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoading() {
+        overlayView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

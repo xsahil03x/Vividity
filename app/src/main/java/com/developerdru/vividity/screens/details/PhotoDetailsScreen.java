@@ -161,7 +161,10 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         }
         this.userId = photo.getUploaderId();
         // Populate Image and caption
-        GlideApp.with(this).load(photo.getDownloadURL()).into(imgPhotoDetails);
+        GlideApp.with(this).load(photo.getDownloadURL())
+                .placeholder(R.drawable.ic_logo_baby)
+                .error(R.drawable.ic_baby_mono)
+                .into(imgPhotoDetails);
         toolbar.setTitle(photo.getCaption());
 
         // populate image metadata
@@ -170,7 +173,10 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         tvCommentCount.setText(String.valueOf(photo.getCommentsCount()));
 
         // populate Uploader Info
-        GlideApp.with(this).load(photo.getUploaderPic()).into(imgUploader);
+        GlideApp.with(this).load(photo.getUploaderPic())
+                .placeholder(R.drawable.ic_logo_baby)
+                .error(R.drawable.ic_baby_mono)
+                .into(imgUploader);
         tvUploaderName.setText(photo.getUploader());
     }
 

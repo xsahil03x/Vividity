@@ -78,7 +78,10 @@ class ProfileUserAdapter extends RecyclerView.Adapter<ProfileUserAdapter.FollowU
 
         void bind(int position) {
             FollowUser user = users.get(position);
-            GlideApp.with(itemView.getContext()).load(user.getProfilePicURL()).into(imgUser);
+            GlideApp.with(itemView.getContext()).load(user.getProfilePicURL())
+                    .placeholder(R.drawable.ic_logo_baby)
+                    .error(R.drawable.ic_baby_mono)
+                    .into(imgUser);
             name.setText(user.getDisplayName());
             notification.setChecked(user.isNotification());
 
