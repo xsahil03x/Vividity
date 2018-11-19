@@ -81,8 +81,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoVH> {
 
         void bind(int position) {
             Photo photo = photos.get(position);
-            GlideApp.with(itemView.getContext()).load(photo.getUploaderPic()).into(imgUploader);
-            GlideApp.with(itemView.getContext()).load(photo.getDownloadURL()).into(imgMain);
+            GlideApp.with(itemView.getContext())
+                    .load(photo.getUploaderPic())
+                    .error(R.drawable.ic_baby_mono)
+                    .into(imgUploader);
+            GlideApp.with(itemView.getContext())
+                    .load(photo.getDownloadURL())
+                    .error(R.drawable.ic_baby_mono)
+                    .into(imgMain);
             tvCaption.setText(photo.getCaption());
             tvUploaderName.setText(photo.getUploader());
             tvCommentCount.setText(String.valueOf(photo.getCommentsCount()));

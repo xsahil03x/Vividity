@@ -80,11 +80,15 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
             PhotoComment comment = commentList.get(index);
             GlideApp.with(itemView.getContext())
                     .load(comment.getCommenterPic())
+                    .error(R.drawable.ic_baby_mono)
                     .into(imgCommenter);
+
+            imgCommenter.setOnClickListener(v -> listener.onCommenterImageTapped(comment));
 
             // Show delete icon only for current user's comments
             imgDelete.setVisibility(myId.equalsIgnoreCase(comment.getCommenterId()) ? View
                     .VISIBLE : View.GONE);
+            imgDelete.setOnClickListener(v -> listener.onDeleteTapped(comment));
 
             tvCommenterName.setText(comment.getCommenterName());
             tvCommentDate.setText(dateFormatter.format(comment.getTimestamp()));
@@ -94,5 +98,7 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
 
     interface Listener {
         void onDeleteTapped(@NonNull PhotoComment comment);
+
+        void onCommenterImageTapped(@NonNull PhotoComment comment);
     }
 }

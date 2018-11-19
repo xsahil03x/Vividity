@@ -2,9 +2,12 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryBG"
     android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
     tools:context=".screens.details.PhotoDetailsScreen">
 
     <android.support.design.widget.AppBarLayout
@@ -12,7 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="@dimen/elevation_app_bar"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -29,8 +34,9 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/msg_details_pic"
-                android:scaleType="centerCrop"
-                android:src="@drawable/vividity_logo" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/vividity_logo"
+                app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_img_deails"
@@ -51,8 +57,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        app:fabSize="auto"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_share" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="#CCdfeeed"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/etAddComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/margin_regular"
+        android:layout_marginEnd="@dimen/box_v_small"
+        android:hint="@string/hint_type_comment"
+        android:inputType="text"
+        android:textColor="@color/colorPrimaryDark"
+        tools:ignore="Autofill"
+        tools:text="jkjkgkjggbvbnvcb" />
+
+    <ImageView
+        android:id="@+id/imgSendComment"
+        android:layout_width="@dimen/box_v_small"
+        android:layout_height="@dimen/box_v_small"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_regular"
+        android:contentDescription="@string/text_submit_comment"
+        android:src="@drawable/ic_send" />
+
+    <View
+        android:id="@+id/viewOverlayDetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA000000"
+        android:elevation="@dimen/elevation_max"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/prg_details_screen"
+        android:layout_width="@dimen/box_huge"
+        android:layout_height="@dimen/box_huge"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="@dimen/elevation_max_plus"
+        android:visibility="gone" />
 
 </android.support.design.widget.CoordinatorLayout>

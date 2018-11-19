@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.data.entities.PhotoComment;
+import com.developerdru.vividity.data.remote.OperationStatus;
 
 import java.lang.annotation.Retention;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface PhotoRepository {
     LiveData<List<Photo>> getPhotos(@OrderByParams int orderBy);
 
     LiveData<Photo> getPhotoDetails(@NonNull String photoId);
+
+    LiveData<OperationStatus> incrementUpvoteCount(@NonNull String photoId);
 }

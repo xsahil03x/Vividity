@@ -1,6 +1,7 @@
 package com.developerdru.vividity.data.remote;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 
@@ -8,9 +9,11 @@ import com.developerdru.vividity.data.PhotoRepository;
 import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.utils.FirebasePaths;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,5 +76,37 @@ public class PhotoRepositoryImpl implements PhotoRepository {
         Query photoQuery = photosRef.child(photoId);
         FirebaseQueryLiveData photosData = new FirebaseQueryLiveData(photoQuery);
         return Transformations.map(photosData, snapshot -> snapshot.getValue(Photo.class));
+    }
+
+    @Override
+    public LiveData<OperationStatus> incrementUpvoteCount(@NonNull String photoId) {
+        DatabaseReference reference = photosRef.child(photoId).child(FirebasePaths
+                .PHOTOS_UPVOTE_COUNT_PATH);
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Integer upvoteCount = dataSnapshot.getValue(Integer.class);
+                if (upvoteCount == null) {
+                    upvoteCount = 0;
+                }
+                upvoteCount++;
+                reference.setValue(upvoteCount).addOnCompleteListener(command -> {
+                    if (command.isSuccessful()) {
+                        status.postValue(OperationStatus.getCompletedStatus());
+                    } else {
+                        status.postValue(OperationStatus.getErrorStatus(
+                                command.getException() == null ? "Error" : command
+                                        .getException().getMessage()));
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                status.postValue(OperationStatus.getErrorStatus(databaseError.getMessage()));
+            }
+        });
+        return status;
     }
 }

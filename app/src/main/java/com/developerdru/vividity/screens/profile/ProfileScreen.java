@@ -213,8 +213,8 @@ public class ProfileScreen extends AppCompatActivity implements ProfileUserAdapt
     @Override
     public void onNotificationStatusChange(FollowUser followUser, boolean getNotified) {
         showLoading();
-        LiveData<OperationStatus> statusData = profileVM.changeUserNotificationStatus(userId,
-                getNotified);
+        LiveData<OperationStatus> statusData = profileVM.changeUserNotificationStatus(followUser
+                .getUserId(), getNotified);
         statusData.observe(this, status -> {
             if (status != null && status.isComplete()) {
                 statusData.removeObservers(ProfileScreen.this);

@@ -12,4 +12,6 @@ public interface CommentRepository {
     LiveData<List<PhotoComment>> getCommentsForPhoto(String photoId);
 
     void deleteComment(String photoId, String commentId);
+
+    LiveData<OperationStatus> addComment(String photoId, String text, String myId);
 }

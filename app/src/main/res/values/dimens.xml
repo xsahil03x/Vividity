@@ -34,7 +34,7 @@
     <dimen name="elevation_regular">4dp</dimen>
     <dimen name="elevation_card_regular">4dp</dimen>
     <dimen name="elevation_card_selected">6dp</dimen>
-    <dimen name="elevation_app_bar">6dp</dimen>
+    <dimen name="elevation_app_bar">4dp</dimen>
     <dimen name="elevation_fab">4dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>

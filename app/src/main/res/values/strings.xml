@@ -114,4 +114,9 @@
     <string name="txt_uploaded_by_you">Uploaded by you</string>
     <string name="txt_profile_screen_header">Profile</string>
     <string name="txt_my_profile_screen_header">My Profile</string>
+    <string name="msg_upvote_done">Upvote successful</string>
+    <string name="menu_title_download">Download</string>
+    <string name="hint_type_comment">Type comment</string>
+    <string name="text_submit_comment">Submit comment</string>
+    <string name="msg_comment_added">Comment added successfully</string>
 </resources>
