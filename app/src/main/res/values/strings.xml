@@ -126,4 +126,6 @@
     <string name="text_unable_to_share">Unable to share at the moment</string>
     <string name="something_went_wrong">Something went wrong, please try again later</string>
     <string name="write_external_sd_rationale">Required for saving photos locally</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

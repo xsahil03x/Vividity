@@ -62,7 +62,7 @@ public class Downloader extends IntentService {
                 final String fileName = intent.getStringExtra(EXTRA_NAME);
                 final String downloadURL = intent.getStringExtra(EXTRA_URL);
                 final boolean shareAfterDownload = intent.getBooleanExtra(EXTRA_SHARE, false);
-                handleActionFoo(fileName, downloadURL, shareAfterDownload);
+                handleDownload(fileName, downloadURL, shareAfterDownload);
             } else {
                 Crashlytics.log("Unknown action in Downloader service: " + action);
             }
@@ -74,9 +74,9 @@ public class Downloader extends IntentService {
      *
      * @param fileName           Name of the file
      * @param downloadURL        download URL of the file
-     * @param shareAfterDownload launch share intent after download if true, else ignore
+     * @param shareAfterDownload launch share intent after download if true, ignore otherwise
      */
-    private void handleActionFoo(String fileName, String downloadURL, boolean shareAfterDownload) {
+    private void handleDownload(String fileName, String downloadURL, boolean shareAfterDownload) {
         File destFolder = new File(Environment.getExternalStoragePublicDirectory(Environment
                 .DIRECTORY_DOWNLOADS), APP_DOWNLOADS_FOLDER);
 
@@ -147,8 +147,7 @@ public class Downloader extends IntentService {
     }
 
     private void handleShare(String absolutePath) throws FileNotFoundException {
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(),
-                absolutePath, "", null);
+        MediaStore.Images.Media.insertImage(getContentResolver(), absolutePath, "", null);
         Uri fileUri = Uri.parse(absolutePath);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);

@@ -62,6 +62,16 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
+
+        <receiver android:name=".widgets.PhotoListWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/photo_list_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
