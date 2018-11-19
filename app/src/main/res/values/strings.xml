@@ -119,4 +119,5 @@
     <string name="hint_type_comment">Type comment</string>
     <string name="text_submit_comment">Submit comment</string>
     <string name="msg_comment_added">Comment added successfully</string>
+    <string name="msg_user_unfollowed">User unfollowed successfully</string>
 </resources>

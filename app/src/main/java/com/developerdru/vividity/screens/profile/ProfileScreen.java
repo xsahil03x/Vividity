@@ -234,8 +234,10 @@ public class ProfileScreen extends AppCompatActivity implements ProfileUserAdapt
             if (status != null && status.isComplete()) {
                 statusData.removeObservers(ProfileScreen.this);
                 userAdapter.unfollowUser(followUser);
-                hideLoading();
+                Toast.makeText(ProfileScreen.this, R.string.msg_user_unfollowed,
+                        Toast.LENGTH_SHORT).show();
             }
+            hideLoading();
         });
     }
 
