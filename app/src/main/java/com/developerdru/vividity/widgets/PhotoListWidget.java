@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.developerdru.vividity.R;
+import com.developerdru.vividity.screens.details.PhotoDetailsScreen;
 import com.developerdru.vividity.screens.home.HomeScreen;
 
 /**
@@ -27,7 +28,7 @@ public class PhotoListWidget extends AppWidgetProvider {
         views.setEmptyView(R.id.stack_widget, R.id.tvEmptyWidget);
 
         // Setting pending intent template for stackview
-        Intent stackItemClickIntent = new Intent(context, HomeScreen.class);
+        Intent stackItemClickIntent = new Intent(context, PhotoDetailsScreen.class);
         stackItemClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         PendingIntent stackItemPI = PendingIntent.getActivity(context,
                 0, stackItemClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);

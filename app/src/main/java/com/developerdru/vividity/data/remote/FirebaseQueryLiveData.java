@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.CountDownLatch;
+
 public class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
 
     private static final String LOG_TAG = "FirebaseQueryLiveData";
@@ -33,6 +35,27 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
         Log.d(LOG_TAG, "onActive");
         query.removeEventListener(listener);
 
+    }
+
+    public DataSnapshot singleFetch(int limit) throws InterruptedException {
+        final DataSnapshot[] snapshot = new DataSnapshot[1];
+        CountDownLatch latch = new CountDownLatch(1);
+        query.limitToFirst(limit).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                snapshot[0] = dataSnapshot;
+                latch.countDown();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+
+        return snapshot[0];
     }
 
     private class InternalValueEventListener implements ValueEventListener {

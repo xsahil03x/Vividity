@@ -43,7 +43,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdapter.Listener,
         View.OnClickListener {
 
-    private static final String KEY_PHOTO_ID = "photoId";
+    public static final String KEY_PHOTO_ID = "photoId";
 
     private static final String DATE_FORMAT = "MMM-dd, yyyy";
 
@@ -196,7 +196,9 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
                 .placeholder(R.drawable.ic_logo_baby)
                 .error(R.drawable.ic_baby_mono)
                 .into(imgPhotoDetails);
-        toolbar.setTitle(photo.getCaption());
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setTitle(photo.getCaption());
+        }
 
         // populate image metadata
         tvUploadDate.setText(dateFormatter.format(photo.getTimestamp()));

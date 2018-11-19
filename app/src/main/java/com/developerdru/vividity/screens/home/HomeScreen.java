@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClickListener {
 
+    public static final String KEY_PHOTO_ID = "home_photo_id";
+
     PhotoAdapter photoAdapter;
 
     HomeVM homeVM;
@@ -46,6 +48,16 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
         rvPhotos.setLayoutManager(new LinearLayoutManager(this));
         photoAdapter = new PhotoAdapter(this);
         rvPhotos.setAdapter(photoAdapter);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String photoId = extras.getString(KEY_PHOTO_ID);
+            if (photoId != null) {
+                Intent detailIntent = PhotoDetailsScreen.getLaunchIntent(this, photoId);
+                startActivity(detailIntent);
+                finish();
+            }
+        }
 
         HomeVMFactory homeVMFactory = new HomeVMFactory(HomeVM.ORDER_TIME, myId);
         homeVM = ViewModelProviders.of(this, homeVMFactory).get(HomeVM.class);

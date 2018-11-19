@@ -30,4 +30,6 @@ public interface PhotoRepository {
     LiveData<Photo> getPhotoDetails(@NonNull String photoId);
 
     LiveData<OperationStatus> incrementUpvoteCount(@NonNull String photoId);
+
+    List<Photo> getPhotosBlocking(int orderBy, int limit) throws InterruptedException;
 }

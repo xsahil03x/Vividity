@@ -43,7 +43,9 @@
             android:label="@string/title_activity_add_photo_screen"
             android:parentActivityName=".screens.home.HomeScreen"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+
+        </activity>
 
         <service
             android:name=".services.PushNotificationService"

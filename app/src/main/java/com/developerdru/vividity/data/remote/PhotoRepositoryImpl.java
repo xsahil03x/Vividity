@@ -72,6 +72,39 @@ public class PhotoRepositoryImpl implements PhotoRepository {
     }
 
     @Override
+    public List<Photo> getPhotosBlocking(int orderBy, int limit) throws InterruptedException {
+        Query photoQuery = photosRef;
+        switch (orderBy) {
+            case ORDER_TIME_DESC:
+                photoQuery = photoQuery.orderByChild(FirebasePaths.PHOTOS_TIMESTAMP_PATH);
+                break;
+            case ORDER_UPVOTE_DESC:
+                photoQuery = photoQuery.orderByChild(FirebasePaths.PHOTOS_UPVOTE_COUNT_PATH);
+                break;
+            case ORDER_COMMENT_COUNT_DESC:
+                photoQuery = photoQuery.orderByChild(FirebasePaths.PHOTOS_COMMENT_COUNT_PATH);
+                break;
+        }
+
+        List<Photo> photos = new ArrayList<>();
+
+        DataSnapshot dataSnapshot = (new FirebaseQueryLiveData(photoQuery)).singleFetch(limit);
+
+        if (dataSnapshot != null) {
+            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                Photo singlePhoto = snapshot.getValue(Photo.class);
+                if (singlePhoto != null) {
+                    singlePhoto.setPicIdentifier(snapshot.getKey());
+                    photos.add(singlePhoto);
+                }
+            }
+            Collections.reverse(photos);
+        }
+
+        return photos;
+    }
+
+    @Override
     public LiveData<Photo> getPhotoDetails(@NonNull String photoId) {
         Query photoQuery = photosRef.child(photoId);
         FirebaseQueryLiveData photosData = new FirebaseQueryLiveData(photoQuery);

@@ -2,16 +2,22 @@ package com.developerdru.vividity.widgets;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
+import com.bumptech.glide.request.target.Target;
+import com.crashlytics.android.Crashlytics;
 import com.developerdru.vividity.R;
 import com.developerdru.vividity.data.PhotoRepository;
 import com.developerdru.vividity.data.RepositoryFactory;
 import com.developerdru.vividity.data.entities.Photo;
-import com.developerdru.vividity.utils.GlideApp;
+import com.developerdru.vividity.screens.details.PhotoDetailsScreen;
+import com.developerdru.vividity.screens.home.HomeScreen;
 
 import java.util.List;
 
@@ -19,6 +25,7 @@ public class PhotoListService extends RemoteViewsService {
 
     static final String EXTRA_WIDGET_ID = "widget_id";
     static final String EXTRA_PHOTO_ID = "widget_photo_id";
+    static final int FETCH_SIZE = 10;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -48,7 +55,13 @@ public class PhotoListService extends RemoteViewsService {
         @Override
         public void onDataSetChanged() {
             // Runs in background thread, can perform long running operations here
-            photos = photoRepository.getPhotos(PhotoRepository.ORDER_TIME_DESC).getValue();
+            try {
+                photos = photoRepository.getPhotosBlocking(PhotoRepository.ORDER_TIME_DESC,
+                        FETCH_SIZE);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Crashlytics.logException(e);
+            }
         }
 
         @Override
@@ -71,15 +84,22 @@ public class PhotoListService extends RemoteViewsService {
             // Set fill in intent
             Intent fillInIntent = new Intent();
             Bundle extras = new Bundle();
-            extras.putString(EXTRA_PHOTO_ID, photo.getPicIdentifier());
+            extras.putString(PhotoDetailsScreen.KEY_PHOTO_ID, photo.getPicIdentifier());
             fillInIntent.putExtras(extras);
 
-            // Set the image
-            appWidgetTarget = new AppWidgetTarget(appContext, R.id.imgWidgetMain, rv, appWidgetId);
-            GlideApp.with(appContext.getApplicationContext())
-                    .asBitmap()
-                    .load(photo.getDownloadURL())
-                    .into(appWidgetTarget);
+            try {
+                Bitmap bitmap = Glide.with(appContext.getApplicationContext())
+                        .asBitmap()
+                        .load(photo.getDownloadURL())
+                        .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .get();
+
+                rv.setImageViewBitmap(R.id.imgWidgetMain, bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            rv.setOnClickFillInIntent(R.id.imgWidgetMain, fillInIntent);
+//            rv.setImageViewResource(R.id.imgWidgetMain, R.drawable.vividity_logo);
 
             return rv;
         }
