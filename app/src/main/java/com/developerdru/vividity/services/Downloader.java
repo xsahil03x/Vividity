@@ -8,12 +8,15 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.developerdru.vividity.R;
+import com.developerdru.vividity.utils.Utility;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -23,8 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import io.reactivex.annotations.NonNull;
 
 public class Downloader extends IntentService {
 
@@ -116,7 +117,7 @@ public class Downloader extends IntentService {
                     .msg_download_complete, Toast.LENGTH_SHORT).show());
 
             if (shareAfterDownload) {
-                handleShare(destFile.getAbsolutePath());
+                handleShare(destFile);
             }
 
         } catch (MalformedURLException mue) {
@@ -146,9 +147,10 @@ public class Downloader extends IntentService {
         }
     }
 
-    private void handleShare(String absolutePath) throws FileNotFoundException {
-        MediaStore.Images.Media.insertImage(getContentResolver(), absolutePath, "", null);
-        Uri fileUri = Uri.parse(absolutePath);
+    private void handleShare(@NonNull File destFile) throws FileNotFoundException {
+        MediaStore.Images.Media.insertImage(getContentResolver(), destFile.getAbsolutePath(),
+                "", null);
+        Uri fileUri = Utility.getFileProviderUri(getApplicationContext(), destFile);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -157,7 +159,7 @@ public class Downloader extends IntentService {
         shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.shared_via_vividity));
 
         shareIntent.setType(mimeTypeMap.getMimeTypeFromExtension(MimeTypeMap
-                .getFileExtensionFromUrl(absolutePath)));
+                .getFileExtensionFromUrl(destFile.getAbsolutePath())));
 
         if (shareIntent.resolveActivity(getPackageManager()) != null) {
             Intent chooserIntent = Intent.createChooser(shareIntent, getString(R.string

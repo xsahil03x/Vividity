@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 
 import com.developerdru.vividity.R;
+
+import java.io.File;
 
 public class Utility {
 
@@ -30,6 +34,12 @@ public class Utility {
             default:
                 return R.drawable.ic_firebase;
         }
+    }
+
+    public static Uri getFileProviderUri(@NonNull Context appContext, @NonNull File localFile) {
+        appContext = appContext.getApplicationContext();
+        String provider = appContext.getPackageName() + ".provider";
+        return FileProvider.getUriForFile(appContext, provider, localFile);
     }
 
 }
