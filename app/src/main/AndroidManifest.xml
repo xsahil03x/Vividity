@@ -4,9 +4,9 @@
     package="com.developerdru.vividity">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <!--<uses-feature android:name="android.hardware.camera2" />-->
-
+    <!-- <uses-feature android:name="android.hardware.camera2" /> -->
     <application
         android:name=".application.AppClass"
         android:allowBackup="false"
@@ -38,19 +38,23 @@
         <activity
             android:name=".screens.profile.ProfileScreen"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".screens.details.PhotoDetailsScreen"
             android:label="@string/title_activity_add_photo_screen"
-            android:screenOrientation="portrait"
             android:parentActivityName=".screens.home.HomeScreen"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
-        <service android:name=".services.PushNotificationService">
+        <service
+            android:name=".services.PushNotificationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <service
+            android:name=".services.Downloader"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

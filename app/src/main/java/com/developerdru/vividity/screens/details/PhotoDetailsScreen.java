@@ -1,5 +1,6 @@
 package com.developerdru.vividity.screens.details;
 
+import android.Manifest;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -28,6 +29,7 @@ import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.data.entities.PhotoComment;
 import com.developerdru.vividity.data.remote.OperationStatus;
 import com.developerdru.vividity.screens.profile.ProfileScreen;
+import com.developerdru.vividity.services.Downloader;
 import com.developerdru.vividity.utils.GlideApp;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,12 +37,17 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdapter.Listener,
         View.OnClickListener {
 
     private static final String KEY_PHOTO_ID = "photoId";
 
     private static final String DATE_FORMAT = "MMM-dd, yyyy";
+
+    private static final int RC_WRITE_EXTERNAL_STORAGE = 22;
 
     RecyclerView rvComments;
     ImageView imgPhotoDetails, imgUploader, imgSendComment;
@@ -52,9 +59,10 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
     Toolbar toolbar;
 
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-    private String photoId;
+    private String photoId, photoDownloadURL, photoName;
     private CommentAdapter commentAdapter;
     private PhotoDetailsVM photoDetailsVM;
+    private boolean isShareIntended = false;
 
     String myId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     String userId;
@@ -121,10 +129,30 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
                 }
                 return true;
             case R.id.menu_details_download:
-                // TODO start the download process via IntentService
+                requireSDCardPermission();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(RC_WRITE_EXTERNAL_STORAGE)
+    private void requireSDCardPermission() {
+        String perms = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            Downloader.enqueue(this, photoName, photoDownloadURL, isShareIntended);
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string
+                    .write_external_sd_rationale), RC_WRITE_EXTERNAL_STORAGE, perms);
+        }
+        if (isShareIntended) {
+            isShareIntended = false;
+        }
     }
 
     private void initializeUI() {
@@ -160,6 +188,9 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
             return;
         }
         this.userId = photo.getUploaderId();
+        this.photoDownloadURL = photo.getDownloadURL();
+        this.photoName = photo.getPicName();
+
         // Populate Image and caption
         GlideApp.with(this).load(photo.getDownloadURL())
                 .placeholder(R.drawable.ic_logo_baby)
@@ -205,7 +236,8 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
                 });
                 break;
             case R.id.fabDetailsShare:
-                // TODO start the share process. Download image and share / or share the image link
+                isShareIntended = true;
+                requireSDCardPermission();
                 break;
             case R.id.imgSendComment:
                 String commentText = etComment.getText().toString().trim();

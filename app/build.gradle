@@ -76,6 +76,12 @@ task printProps {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    // Below imports are only for fixing version conflict, these are not used in the project
+    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'com.android.support:support-media-compat:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+    // version conflict import ends
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -97,6 +103,9 @@ dependencies {
     implementation('com.twitter.sdk.android:twitter:3.3.0@aar') {
         transitive = true
     }
+
+    // For simplifying runtime permissions post Android M
+    implementation 'pub.devrel:easypermissions:2.0.0'
 
     // FirebaseUI for Cloud Storage
     implementation 'com.firebaseui:firebase-ui-storage:4.2.1'

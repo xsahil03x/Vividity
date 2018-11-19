@@ -120,4 +120,10 @@
     <string name="text_submit_comment">Submit comment</string>
     <string name="msg_comment_added">Comment added successfully</string>
     <string name="msg_user_unfollowed">User unfollowed successfully</string>
+    <string name="msg_download_complete">File downloaded successfully</string>
+    <string name="shared_via_vividity">Shared via Vividity for Android</string>
+    <string name="text_share_now">Share</string>
+    <string name="text_unable_to_share">Unable to share at the moment</string>
+    <string name="something_went_wrong">Something went wrong, please try again later</string>
+    <string name="write_external_sd_rationale">Required for saving photos locally</string>
 </resources>
