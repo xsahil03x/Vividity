@@ -57,6 +57,7 @@ public class StorageRepositoryImpl implements StorageRepository {
                     if (!task.isSuccessful()) {
                         throw Objects.requireNonNull(task.getException());
                     }
+                    // get the download url of the newly uploaded picture
                     return newRef.getDownloadUrl();
                 })
                 .addOnCompleteListener(task -> {

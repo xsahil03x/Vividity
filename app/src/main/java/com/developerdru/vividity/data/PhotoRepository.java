@@ -31,5 +31,8 @@ public interface PhotoRepository {
 
     LiveData<OperationStatus> incrementUpvoteCount(@NonNull String photoId);
 
+    LiveData<OperationStatus> addPhotoData(String picName, String myId, String caption, String
+            downloadUrl);
+
     List<Photo> getPhotosBlocking(int orderBy, int limit) throws InterruptedException;
 }

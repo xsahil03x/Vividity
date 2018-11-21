@@ -120,7 +120,8 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (upIntent != null && NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                if (upIntent != null && (NavUtils.shouldUpRecreateTask(this, upIntent) ||
+                        isTaskRoot())) {
                     TaskStackBuilder.create(this)
                             .addNextIntentWithParentStack(upIntent)
                             .startActivities();
@@ -196,8 +197,9 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
                 .placeholder(R.drawable.ic_logo_baby)
                 .error(R.drawable.ic_baby_mono)
                 .into(imgPhotoDetails);
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(photo.getCaption());
+            toolbar.setTitle(photo.getCaption());
         }
 
         // populate image metadata

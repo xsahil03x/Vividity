@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.View;
 
 import com.developerdru.vividity.R;
 import com.developerdru.vividity.data.entities.Photo;
+import com.developerdru.vividity.screens.add.AddPhotoScreen;
 import com.developerdru.vividity.screens.details.PhotoDetailsScreen;
 import com.developerdru.vividity.screens.login.LoginScreen;
 import com.developerdru.vividity.screens.profile.ProfileScreen;
@@ -48,6 +50,11 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
         rvPhotos.setLayoutManager(new LinearLayoutManager(this));
         photoAdapter = new PhotoAdapter(this);
         rvPhotos.setAdapter(photoAdapter);
+        FloatingActionButton fabAdd = findViewById(R.id.fab_add_action);
+        fabAdd.setOnClickListener(v -> {
+            Intent addIntent = new Intent(this, AddPhotoScreen.class);
+            startActivity(addIntent);
+        });
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

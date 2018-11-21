@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.developerdru.vividity.data.PhotoRepository;
 import com.developerdru.vividity.data.entities.Photo;
+import com.developerdru.vividity.data.entities.User;
 import com.developerdru.vividity.utils.FirebasePaths;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,11 +34,13 @@ public class PhotoRepositoryImpl implements PhotoRepository {
     }
 
     private DatabaseReference photosRef;
+    private DatabaseReference usersRef;
 
 
     private PhotoRepositoryImpl() {
         DatabaseReference baseRef = FirebaseDatabase.getInstance().getReference();
         photosRef = baseRef.child(FirebasePaths.PHOTOS_DB_PATH);
+        usersRef = baseRef.child(FirebasePaths.USERS_DB_PATH);
     }
 
     @Override
@@ -140,6 +143,56 @@ public class PhotoRepositoryImpl implements PhotoRepository {
                 status.postValue(OperationStatus.getErrorStatus(databaseError.getMessage()));
             }
         });
+        return status;
+    }
+
+    @Override
+    public LiveData<OperationStatus> addPhotoData(String picName, String myId, String
+            caption, String downloadUrl) {
+        final MutableLiveData<OperationStatus> status = new MutableLiveData<>();
+        usersRef.child(myId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User currentUser = dataSnapshot.getValue(User.class);
+                if (currentUser != null) {
+                    String userName = currentUser.getDisplayName();
+                    String userPic = currentUser.getProfilePicURL();
+                    String key = photosRef.push().getKey();
+
+                    Photo photo = new Photo();
+                    photo.setPicIdentifier(key);
+                    photo.setDownloadURL(downloadUrl);
+                    photo.setCaption(caption);
+                    photo.setCommentsCount(0);
+                    photo.setPicName(picName);
+                    photo.setTimestamp(System.currentTimeMillis());
+                    photo.setUploader(userName);
+                    photo.setUploaderId(myId);
+                    photo.setUploaderPic(userPic);
+                    photo.setUpvoteCount(1);
+
+                    assert key != null;
+                    photosRef.child(key).setValue(photo)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    status.postValue(OperationStatus.getCompletedStatus());
+                                } else {
+                                    status.postValue(OperationStatus.getErrorStatus(task
+                                            .getException() == null ? "Error" : task
+                                            .getException().getMessage()));
+                                }
+                            });
+                } else {
+                    status.postValue(OperationStatus.getErrorStatus("User is null"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                status.postValue(OperationStatus.getErrorStatus(databaseError.getMessage()));
+            }
+        });
+
         return status;
     }
 }

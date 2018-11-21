@@ -104,6 +104,8 @@ public class CommentRepositoryImpl implements CommentRepository {
                                             .getException().getMessage()));
                                 }
                             });
+                } else {
+                    status.postValue(OperationStatus.getErrorStatus("User is null"));
                 }
             }
 
