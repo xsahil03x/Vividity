@@ -112,7 +112,10 @@ public class AddPhotoScreen extends AppCompatActivity implements View.OnClickLis
                             } else if (status.isComplete()) {
                                 hideLoading();
                                 tvProgressStatus.setText(R.string.txt_photo_upload_done);
+                                clearViews();
                             }
+                        } else {
+                            hideLoading();
                         }
                     });
                 }
@@ -123,15 +126,22 @@ public class AddPhotoScreen extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private void clearViews() {
+        imgNewPhoto.setImageResource(R.drawable.camera_plus);
+        etAddPicCaption.setText("");
+    }
+
     private void hideLoading() {
         overlayView.setVisibility(View.GONE);
         progressDialog.setProgress(0);
         progressDialog.setVisibility(View.GONE);
+        tvUploadProgress.setVisibility(View.GONE);
     }
 
     private void showLoading() {
         overlayView.setVisibility(View.VISIBLE);
         progressDialog.setVisibility(View.VISIBLE);
+        tvUploadProgress.setVisibility(View.VISIBLE);
     }
 
     private void updateProgress(int progressPct) {

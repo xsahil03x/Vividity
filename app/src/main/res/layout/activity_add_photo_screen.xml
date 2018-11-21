@@ -115,6 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_x_large"
         android:elevation="@dimen/elevation_max_plus"
+        android:textColor="@color/pureWhite"
         android:textSize="20sp"
         android:textStyle="bold|italic"
         android:visibility="gone"
