@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.developerdru.vividity.R;
+import com.developerdru.vividity.notification.NotificationUtils;
 import com.developerdru.vividity.utils.Utility;
 
 import java.io.DataInputStream;
@@ -118,6 +119,17 @@ public class Downloader extends IntentService {
 
             if (shareAfterDownload) {
                 handleShare(destFile);
+            } else {
+                Uri downloadedFileURI = Utility.getFileProviderUri(getApplicationContext(),
+                        destFile);
+                Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
+                openFileIntent.setData(downloadedFileURI);
+                if (openFileIntent.resolveActivity(getPackageManager()) != null) {
+                    NotificationUtils.showDownloadedNotification(getApplicationContext(),
+                            openFileIntent);
+                } else {
+                    NotificationUtils.showDownloadedNotification(getApplicationContext(), null);
+                }
             }
 
         } catch (MalformedURLException mue) {

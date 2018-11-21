@@ -101,12 +101,13 @@ public class UserRepositoryImpl implements UserRepository {
             currentUserInfo.put(FirebasePaths.USER_ID_PATH, myId);
             currentUserInfo.put(FirebasePaths.USER_PIC_PATH, myProfilePic);
             currentUserInfo.put(FirebasePaths.USER_NAME_PATH, myDisplayName);
+            //currentUserInfo.put(FirebasePaths.USER_NOTIFICATION_PATH, true);
 
             Map<String, Object> infoOfUserToFollow = new HashMap<>();
             infoOfUserToFollow.put(FirebasePaths.USER_ID_PATH, userId);
             infoOfUserToFollow.put(FirebasePaths.USER_PIC_PATH, profilePic);
             infoOfUserToFollow.put(FirebasePaths.USER_NAME_PATH, userName);
-            infoOfUserToFollow.put(FirebasePaths.USER_NOTIFICATION_PATH, false);
+            infoOfUserToFollow.put(FirebasePaths.USER_NOTIFICATION_PATH, true);
 
             // Add in my followed list
             usersRef.child(myId).child(FirebasePaths.USER_FOllOWS_PATH).child(userId)

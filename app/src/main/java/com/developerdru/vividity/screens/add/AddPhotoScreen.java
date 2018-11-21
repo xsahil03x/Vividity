@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.developerdru.vividity.R;
@@ -86,6 +87,7 @@ public class AddPhotoScreen extends AppCompatActivity implements View.OnClickLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -112,7 +114,7 @@ public class AddPhotoScreen extends AppCompatActivity implements View.OnClickLis
                             } else if (status.isComplete()) {
                                 hideLoading();
                                 tvProgressStatus.setText(R.string.txt_photo_upload_done);
-                                clearViews();
+                                clearViewsAndClose();
                             }
                         } else {
                             hideLoading();
@@ -126,9 +128,11 @@ public class AddPhotoScreen extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void clearViews() {
+    private void clearViewsAndClose() {
+        Toast.makeText(this, R.string.msg_upload_complete, Toast.LENGTH_SHORT).show();
         imgNewPhoto.setImageResource(R.drawable.camera_plus);
         etAddPicCaption.setText("");
+        finish();
     }
 
     private void hideLoading() {

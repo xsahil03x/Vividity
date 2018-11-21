@@ -55,4 +55,9 @@
     <string name="pick_from_gallery_title">Pick an image</string>
     <string name="default_caption_for_photo">My Awesome pic</string>
     <string name="txt_photo_upload_done">Photo uploaded</string>
+    <string name="msg_upload_complete">Uploaded successfully</string>
+    <string name="notif_channel_default">General</string>
+    <string name="channel_default_description">Default channel</string>
+    <string name="msg_new_pic_by_people_you_follow" formatted="true">New photo by %s</string>
+    <string name="msg_downloaded_tap_to_view">File download success. Tap to view and share.</string>
 </resources>

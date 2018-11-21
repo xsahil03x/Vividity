@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.developerdru.vividity.R;
+import com.developerdru.vividity.notification.NotificationUtils;
 import com.developerdru.vividity.screens.home.HomeScreen;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -31,8 +32,6 @@ public class LoginScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
 
-        // TODO perform internet connectivity check here and take appropriate action
-
         // Check if the user has already logged in
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             navigateToHome();
@@ -41,6 +40,8 @@ public class LoginScreen extends AppCompatActivity {
             loginVM = ViewModelProviders.of(this, loginVMFactory).get(LoginVM.class);
             launchLogin();
             getFCMToken();
+            // Register notification channel
+            NotificationUtils.registerNotificationChannels(this);
         }
     }
 

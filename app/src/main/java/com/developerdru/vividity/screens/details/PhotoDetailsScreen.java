@@ -74,7 +74,10 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         setContentView(R.layout.activity_photo_details_screen);
         toolbar = findViewById(R.id.toolbar_img_deails);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         initializeUI();
 
@@ -152,9 +155,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
             EasyPermissions.requestPermissions(this, getString(R.string
                     .write_external_sd_rationale), RC_WRITE_EXTERNAL_STORAGE, perms);
         }
-        if (isShareIntended) {
-            isShareIntended = false;
-        }
+        isShareIntended = false;
     }
 
     private void initializeUI() {
@@ -200,7 +201,6 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
                 .into(imgPhotoDetails);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(photo.getCaption());
-            toolbar.setTitle(photo.getCaption());
         }
 
         // populate image metadata
