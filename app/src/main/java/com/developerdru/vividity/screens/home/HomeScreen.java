@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -117,13 +118,15 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
     }
 
     @Override
-    public void onPhotoTapped(Photo photo) {
+    public void onPhotoTapped(Photo photo, View sharedTransitionElement) {
         Intent detailIntent = PhotoDetailsScreen.getLaunchIntent(this, photo.getPicIdentifier());
-        startActivity(detailIntent);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation
+                (this, sharedTransitionElement, "photoTransition");
+        startActivity(detailIntent, optionsCompat.toBundle());
     }
 
     @Override
-    public void onUploaderTapped(Photo photo) {
+    public void onUploaderTapped(Photo photo, View sharedTransitionElement) {
         String uploaderId = photo.getUploaderId();
         LiveData<Boolean> followLiveData = homeVM.amIFollowing(uploaderId);
         followLiveData.observe(this, follows -> {
@@ -131,7 +134,10 @@ public class HomeScreen extends AppCompatActivity implements PhotoAdapter.OnClic
             boolean followStatus = follows == null ? false : follows;
             Intent profileScreenIntent = ProfileScreen.getLaunchIntent(HomeScreen.this, uploaderId,
                     uploaderId.equalsIgnoreCase(myId), followStatus);
-            startActivity(profileScreenIntent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this, sharedTransitionElement,
+                            "profilePicTransition");
+            startActivity(profileScreenIntent, optionsCompat.toBundle());
         });
     }
 }

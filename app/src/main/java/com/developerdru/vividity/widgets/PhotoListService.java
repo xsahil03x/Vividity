@@ -8,7 +8,6 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.bumptech.glide.request.target.Target;
 import com.crashlytics.android.Crashlytics;
@@ -17,7 +16,6 @@ import com.developerdru.vividity.data.PhotoRepository;
 import com.developerdru.vividity.data.RepositoryFactory;
 import com.developerdru.vividity.data.entities.Photo;
 import com.developerdru.vividity.screens.details.PhotoDetailsScreen;
-import com.developerdru.vividity.screens.home.HomeScreen;
 
 import java.util.List;
 
@@ -97,10 +95,9 @@ public class PhotoListService extends RemoteViewsService {
                 rv.setImageViewBitmap(R.id.imgWidgetMain, bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
+                Crashlytics.logException(e);
             }
             rv.setOnClickFillInIntent(R.id.imgWidgetMain, fillInIntent);
-//            rv.setImageViewResource(R.id.imgWidgetMain, R.drawable.vividity_logo);
-
             return rv;
         }
 

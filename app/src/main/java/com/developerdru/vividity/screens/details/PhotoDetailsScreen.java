@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
@@ -226,7 +227,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgUploader:
-                openProfileScreen(userId);
+                openProfileScreen(userId, imgUploader);
                 break;
             case R.id.tvUpvoteCount:
                 showLoading();
@@ -268,19 +269,22 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
     }
 
     @Override
-    public void onCommenterImageTapped(@NonNull PhotoComment comment) {
+    public void onCommenterImageTapped(@NonNull PhotoComment comment, View sharedElement) {
         String uploaderId = comment.getCommenterId();
-        openProfileScreen(uploaderId);
+        openProfileScreen(uploaderId, sharedElement);
     }
 
-    private void openProfileScreen(String uploaderId) {
+    private void openProfileScreen(String uploaderId, View sharedElement) {
         LiveData<Boolean> followLiveData = photoDetailsVM.amIFollowing(uploaderId);
         followLiveData.observe(this, follows -> {
             followLiveData.removeObservers(this);
             boolean followStatus = follows == null ? false : follows;
             Intent profileScreenIntent = ProfileScreen.getLaunchIntent(PhotoDetailsScreen.this,
                     uploaderId, uploaderId.equalsIgnoreCase(myId), followStatus);
-            startActivity(profileScreenIntent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this, sharedElement,
+                            "profilePicTransition");
+            startActivity(profileScreenIntent, optionsCompat.toBundle());
         });
     }
 

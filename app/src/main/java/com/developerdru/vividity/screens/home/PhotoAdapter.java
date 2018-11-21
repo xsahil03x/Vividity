@@ -97,14 +97,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoVH> {
             tvUpVoteCount.setText(String.valueOf(photo.getUpvoteCount()));
             tvUploadDate.setText(dateFormat.format(photo.getTimestamp()));
 
-            imgMain.setOnClickListener(v -> listener.onPhotoTapped(photo));
-            imgUploader.setOnClickListener(v -> listener.onUploaderTapped(photo));
+            imgMain.setOnClickListener(v -> listener.onPhotoTapped(photo, imgMain));
+            imgUploader.setOnClickListener(v -> listener.onUploaderTapped(photo, imgUploader));
         }
     }
 
     interface OnClickListener {
-        void onPhotoTapped(Photo photo);
+        void onPhotoTapped(Photo photo, View imgPhoto);
 
-        void onUploaderTapped(Photo photo);
+        void onUploaderTapped(Photo photo, View imgUploaderPic);
     }
 }

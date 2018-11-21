@@ -66,6 +66,7 @@
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/msg_profile_pic"
         android:elevation="@dimen/elevation_regular"
+        android:transitionName="profilePicTransition"
         app:civ_border_color="@color/borderDark"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"

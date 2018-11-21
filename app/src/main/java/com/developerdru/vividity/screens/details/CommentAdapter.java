@@ -84,7 +84,8 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
                     .error(R.drawable.ic_baby_mono)
                     .into(imgCommenter);
 
-            imgCommenter.setOnClickListener(v -> listener.onCommenterImageTapped(comment));
+            imgCommenter.setOnClickListener(v -> listener.onCommenterImageTapped(comment,
+                    imgCommenter));
 
             // Show delete icon only for current user's comments
             imgDelete.setVisibility(myId.equalsIgnoreCase(comment.getCommenterId()) ? View
@@ -100,6 +101,6 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
     interface Listener {
         void onDeleteTapped(@NonNull PhotoComment comment);
 
-        void onCommenterImageTapped(@NonNull PhotoComment comment);
+        void onCommenterImageTapped(@NonNull PhotoComment comment, View sharedElement);
     }
 }

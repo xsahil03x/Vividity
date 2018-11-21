@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -242,7 +243,7 @@ public class ProfileScreen extends AppCompatActivity implements ProfileUserAdapt
     }
 
     @Override
-    public void onProfilePicTapped(FollowUser user) {
+    public void onProfilePicTapped(FollowUser user, View sharedElement) {
 
         LiveData<Boolean> followLiveData = profileVM.amIFollowing(user.getUserId());
         followLiveData.observe(this, follows -> {
@@ -251,7 +252,10 @@ public class ProfileScreen extends AppCompatActivity implements ProfileUserAdapt
 
             Intent profileIntent = getLaunchIntent(ProfileScreen.this, user.getUserId(),
                     user.getUserId().equalsIgnoreCase(myId), followStatus);
-            startActivity(profileIntent);
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this, sharedElement,
+                            "profilePicTransition");
+            startActivity(profileIntent, optionsCompat.toBundle());
         });
     }
 

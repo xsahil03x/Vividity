@@ -32,6 +32,7 @@
                 android:id="@+id/imgDetailsMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:transitionName="photoTransition"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/msg_details_pic"
                 android:scaleType="centerInside"

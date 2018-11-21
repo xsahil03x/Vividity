@@ -18,6 +18,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/msg_profile_pic"
+        android:transitionName="profilePicTransition"
         app:civ_border_color="@color/borderDark"
         app:civ_border_width="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
