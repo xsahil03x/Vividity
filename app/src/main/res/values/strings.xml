@@ -60,4 +60,5 @@
     <string name="channel_default_description">Default channel</string>
     <string name="msg_new_pic_by_people_you_follow" formatted="true">New photo by %s</string>
     <string name="msg_downloaded_tap_to_view">File download success. Tap to view and share.</string>
+    <string name="msg_file_download_start">Downloading file</string>
 </resources>

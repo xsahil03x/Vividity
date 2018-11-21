@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
@@ -122,8 +121,12 @@ public class Downloader extends IntentService {
             } else {
                 Uri downloadedFileURI = Utility.getFileProviderUri(getApplicationContext(),
                         destFile);
+                String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap
+                        .getFileExtensionFromUrl(downloadedFileURI.toString()));
                 Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
-                openFileIntent.setData(downloadedFileURI);
+                openFileIntent.setDataAndType(downloadedFileURI, "image/*");
+                openFileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent
+                        .FLAG_GRANT_READ_URI_PERMISSION);
                 if (openFileIntent.resolveActivity(getPackageManager()) != null) {
                     NotificationUtils.showDownloadedNotification(getApplicationContext(),
                             openFileIntent);

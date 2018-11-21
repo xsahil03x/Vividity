@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -35,6 +37,7 @@ import com.developerdru.vividity.utils.GlideApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,6 +80,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setTitle("");
         }
 
         initializeUI();
@@ -150,6 +154,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
     private void requireSDCardPermission() {
         String perms = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         if (EasyPermissions.hasPermissions(this, perms)) {
+            Toast.makeText(this, R.string.msg_file_download_start, Toast.LENGTH_SHORT).show();
             Downloader.enqueue(this, photoName, photoDownloadURL, isShareIntended);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string
@@ -201,6 +206,8 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
                 .into(imgPhotoDetails);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(photo.getCaption());
+            toolbar.setTitle(photo.getCaption());
+
         }
 
         // populate image metadata
@@ -217,10 +224,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
     }
 
     private void populateComments(List<PhotoComment> comments) {
-        if (comments == null) {
-            return;
-        }
-        commentAdapter.addComments(comments);
+        commentAdapter.addComments(comments == null ? new ArrayList<>() : comments);
     }
 
     @Override

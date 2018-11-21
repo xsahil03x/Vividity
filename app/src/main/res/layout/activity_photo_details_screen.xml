@@ -32,11 +32,11 @@
                 android:id="@+id/imgDetailsMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:transitionName="photoTransition"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/msg_details_pic"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
                 android:src="@drawable/vividity_logo"
+                android:transitionName="photoTransition"
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
