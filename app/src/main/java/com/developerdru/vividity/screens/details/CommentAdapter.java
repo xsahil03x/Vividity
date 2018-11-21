@@ -80,7 +80,7 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
             PhotoComment comment = commentList.get(index);
             GlideApp.with(itemView.getContext())
                     .load(comment.getCommenterPic())
-                    .placeholder(R.drawable.ic_logo_baby)
+                    .placeholder(R.drawable.vividity_logo)
                     .error(R.drawable.ic_baby_mono)
                     .into(imgCommenter);
 

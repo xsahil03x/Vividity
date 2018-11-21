@@ -102,7 +102,7 @@ public class ProfileScreen extends AppCompatActivity implements ProfileUserAdapt
             if (user != null) {
                 this.user = user;
                 GlideApp.with(this).load(user.getProfilePicURL())
-                        .placeholder(R.drawable.ic_logo_baby)
+                        .placeholder(R.drawable.vividity_logo)
                         .error(R.drawable.ic_baby_mono)
                         .into(imgProfilePic);
                 tvProfileName.setText(user.getDisplayName());

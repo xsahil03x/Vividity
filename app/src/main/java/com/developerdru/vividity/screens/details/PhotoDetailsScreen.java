@@ -195,7 +195,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
 
         // Populate Image and caption
         GlideApp.with(this).load(photo.getDownloadURL())
-                .placeholder(R.drawable.ic_logo_baby)
+                .placeholder(R.drawable.vividity_logo)
                 .error(R.drawable.ic_baby_mono)
                 .into(imgPhotoDetails);
         if (getSupportActionBar() != null) {
@@ -210,7 +210,7 @@ public class PhotoDetailsScreen extends AppCompatActivity implements CommentAdap
 
         // populate Uploader Info
         GlideApp.with(this).load(photo.getUploaderPic())
-                .placeholder(R.drawable.ic_logo_baby)
+                .placeholder(R.drawable.vividity_logo)
                 .error(R.drawable.ic_baby_mono)
                 .into(imgUploader);
         tvUploaderName.setText(photo.getUploader());

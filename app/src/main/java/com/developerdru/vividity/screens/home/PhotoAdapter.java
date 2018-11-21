@@ -83,12 +83,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoVH> {
             Photo photo = photos.get(position);
             GlideApp.with(itemView.getContext())
                     .load(photo.getUploaderPic())
-                    .placeholder(R.drawable.ic_logo_baby)
+                    .placeholder(R.drawable.vividity_logo)
                     .error(R.drawable.ic_baby_mono)
                     .into(imgUploader);
             GlideApp.with(itemView.getContext())
                     .load(photo.getDownloadURL())
-                    .placeholder(R.drawable.ic_logo_baby)
+                    .placeholder(R.drawable.vividity_logo)
                     .error(R.drawable.ic_baby_mono)
                     .into(imgMain);
             tvCaption.setText(photo.getCaption());
