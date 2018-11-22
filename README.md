@@ -5,10 +5,12 @@ A baby photo sharing app.
 ## How to run the app 
 
 - Clone the repository
+- Either skip twitter login or Replace Twitter API key and Secret in strings.xml (2nd and 3rd 
+string resource in strings.xml) 
 - Build app
 - run the `./gradlew :app:installRelease` command
 
-(No need to create any separate project or anything)
+(No need to create any separate firebase project or signing key)
 
 ## Features
 

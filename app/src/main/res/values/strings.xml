@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Vividity</string>
-    <!-- Twitter consumer key and secret -->
-    <string name="twitter_consumer_key" translatable="false">0vHTRptlvJdETVYLvMhvUbcIg</string>
-    <string name="twitter_consumer_secret" translatable="false">nJWW0QDrl1bYqBQH8c65SxZUwovKGvfsvzchk9R8oYgUFDqpv8</string>
+    <!-- Put Twitter consumer key and secret here -->
+    <!-- The below keys are INVALID, replace with valid ones -->
+    <string name="twitter_consumer_key" translatable="false">twitter_consumer_key</string>
+    <string name="twitter_consumer_secret" translatable="false">twitter_consumer_secret</string>
+    <!-- Twitter key ends -->
     <string name="msg_login_failed_retry">Login Failed, please try again later</string>
     <string name="menu_title_profile">Profile</string>
     <string name="menu_title_feedback">Feedback</string>
