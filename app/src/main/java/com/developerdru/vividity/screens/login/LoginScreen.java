@@ -92,10 +92,20 @@ public class LoginScreen extends AppCompatActivity {
                 String provider = response == null ? "Firebase" : response.getProviderType();
                 String providerId = user.getEmail();
                 String userId = user.getUid();
-                String profilePic = user.getPhotoUrl() == null ? null : user.getPhotoUrl()
+                String pic = user.getPhotoUrl() == null ? null : user.getPhotoUrl()
                         .toString();
                 String displayName = user.getDisplayName();
-
+                String profilePic;
+                switch (provider) {
+                    case "twitter.com":
+                        profilePic = pic != null ? pic.replace("normal", "400x400") : null;
+                        break;
+                    case "google.com":
+                        profilePic = pic != null ? pic.replace("s96-c", "s300-c") : null;
+                        break;
+                    default:
+                        profilePic = pic;
+                }
 
                 loginVM.updateCurrentUserInfo(userId, provider, profilePic, providerId,
                         displayName, fcmToken)
